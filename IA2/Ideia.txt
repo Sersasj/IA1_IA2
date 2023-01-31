@@ -1,0 +1,16 @@
+Sendo o problema escolher qual aposta fazer considerando os jogos do time X.
+Considerando as variáveis:
+Jogo em casa
+Qualidade dos jogadores do time X
+Qualidade dos jogadores do adversário
+Odds da vitoria/empate/derrota
+Algum outro atributp do time
+Considerando as decisões:
+Apostar na vitória
+Apostar no empate
+Apostar na derrota
+
+data
+https://www.kaggle.com/datasets/hugomathien/soccer
+ver dado
+https://inloop.github.io/sqlite-viewer/

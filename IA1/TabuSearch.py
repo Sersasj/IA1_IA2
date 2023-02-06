@@ -10,9 +10,9 @@ import random
 import math
 
 
-def total_conflicts(board):
+def conflicts(board):
     """
-    Calcula a quantidade de conflitos do tabuleiro fitness do cromossomo
+    Calcula a quantidade de conflitos do tabuleiro 
     Parâmetros:
     board -- np.array com a posição de cada rainha no tabuleiro
     Retorna:
@@ -53,16 +53,17 @@ def tabu_search(number_of_queens, tabu_list_size=100):
     solução encontrada
 
     """
+    
     board = generate_board(number_of_queens)
     best = board[:]
-    best_conflicts = total_conflicts(best)
+    best_conflicts = conflicts(best)
     tabu_list = []
     while best_conflicts != 0:
         print(best_conflicts)  
         row, column = random.sample(range(number_of_queens), 2) 
         current = best[row]
         best[row] = column
-        current_conflicts = total_conflicts(best)
+        current_conflicts = conflicts(best)
         if current_conflicts < best_conflicts:
             best_conflicts = current_conflicts
             tabu_list.append(best[:])
@@ -70,14 +71,15 @@ def tabu_search(number_of_queens, tabu_list_size=100):
                 tabu_list.pop(0)
         else:
             best[row] = current
-        neighbors = [(row, c) for c in range(number_of_queens) if c != current]
+            
+        neighbors = [[row, column] for c in range(number_of_queens) if c != current]
         random.shuffle(neighbors)
         found_best = False
         for neighbor in neighbors:
-            r, c = neighbor
-            current = best[r]
-            best[r] = c
-            current_conflicts = total_conflicts(best)
+            row, column = neighbor[0], neighbor[1]
+            current = best[row]
+            best[row] = column
+            current_conflicts = conflicts(best)
             if current_conflicts < best_conflicts and neighbor not in tabu_list:
                 best_conflicts = current_conflicts
                 tabu_list.append(best[:])
@@ -86,10 +88,10 @@ def tabu_search(number_of_queens, tabu_list_size=100):
                 found_best = True
                 break
             else:
-                best[r] = current
+                best[row] = current
         if not found_best:
             best = generate_board(number_of_queens)
-            best_conflicts = total_conflicts(best)
+            best_conflicts = conflicts(best)
     return best
 
 def show_board(board, number_of_queens):

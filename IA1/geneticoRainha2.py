@@ -191,7 +191,7 @@ def show_board(chromosome, number_of_queens):
         print (" ".join(row))  
 
 def main():    
-    number_of_queens = 9
+    number_of_queens = 8
     population_size = 100
     mutation_probability = 0.1
     max_fitness = (number_of_queens*(number_of_queens-1))/2     

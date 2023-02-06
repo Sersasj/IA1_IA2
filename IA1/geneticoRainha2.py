@@ -21,7 +21,7 @@ def create_chromosome(number_of_queens):
     np.random.shuffle(chromosome)
     return chromosome    
     
-def fitness1(chromosome):
+def fitness(chromosome):
     """
     Calcula o fitness do cromossomo
     o fitness é calculado pelo numero de pares de rainhas (i, j), i < j que não se atacam
@@ -44,30 +44,6 @@ def fitness1(chromosome):
             fitness += 1
     return fitness    
 
-def fitness(chromosome):
-    number_of_queens = len(chromosome)
-    max_fitness = (number_of_queens*(number_of_queens-1))/2     
-
-    horizontal_collisions = 0
-    diagonal_collisions = 0
-
-    n = len(chromosome)
-    left_diagonal = [0] * 2*n
-    right_diagonal = [0] * 2*n
-    for i in range(n):
-        left_diagonal[i + chromosome[i] - 1] += 1
-        right_diagonal[len(chromosome) - i + chromosome[i] - 2] += 1
-
-    diagonal_collisions = 0
-    for i in range(2*n-1):
-        counter = 0
-        if left_diagonal[i] > 1:
-            counter += left_diagonal[i]-1
-        if right_diagonal[i] > 1:
-            counter += right_diagonal[i]-1
-        diagonal_collisions += counter / (n-abs(i-n+1))
-    
-    return int(max_fitness - (horizontal_collisions + diagonal_collisions)) #28-(2+3)=23
 
 def mutate(chromosome):
     """
@@ -91,6 +67,7 @@ def reproduce(parent_chromosome_1, parent_chromosome_2):
     """
     Faz o cruzamento entre dois cromossomos
     faz o crossover em um ponto do cromossomo
+    caso o cruzamento seja invalido ele é refeito
     Parâmetros:    
     chromosome1 :  cromossomo pai
     chromosome2 :  cromossomo mae
@@ -124,7 +101,7 @@ def roullete_pick(population):
     """
     Seleciona um cromossomo da população
     a escolha é feita com base no fitness de cada cromossomo
-    Parâmetros
+    Parâmetros:
     population -- lista com cromossomos
     Retorna:
     index do cromossomo selecionado
@@ -139,7 +116,7 @@ def roullete_pick(population):
 def epochs(population, mutation_probability):
     """
     Realiza o cruzamento, adiciona na nova população 
-    Parâmetros
+    Parâmetros:
     population -- lista com cromossomos
     mutation_probability -- probabilidade de ocorrencia de uma mutação
     Retorna:
@@ -160,25 +137,54 @@ def epochs(population, mutation_probability):
     return new_population        
 
 
-def print_chromosome(chrom):
-    print("Chromosome = {},  Fitness = {}"
-        .format(str(chrom), fitness(chrom)))
-
-
-def main():
+def show_chromosome(chromosome):
     """
-    Step 1: A random chromosome is generated
-    Step 2: Fitness value of the chromosome is calculated
-    Step 3: If fitness is not equal to Fmax
-    Step 4: Reproduce (crossover) new chromosome from 2 randomly selected best chromosomes
-    Step 5: Mutation may take place
-    Step 6: New chromosome added to population
-    Repeat Step 2 to 6 until a chromosome (solution) with Fitness value = Fmax is found
+    Printa informações do cromossomo
+    Parâmetros:
+    chromosome -- np.array com a posição de cada rainha no tabuleiro
+    Retorna:
+    None
     """
+    print("Cromossomo = {},  Fitness = {}".format(str(chromosome),
+                                                  fitness(chromosome)))
     
+def solution(population, max_fitness):
+    """
+    Seleciona o cromossomo com uma solução do n-rainhas
+    Parâmetros:
+    population -- lista com cromossomos
+    max_fitness -- inteiro com o valor maximo do fitness
+    Retorna:
+    Cromossomo com uma solução do n-rainhas
+    """
+    for chromosome in population:
+        if fitness(chromosome) == max_fitness:
+            return chromosome
+    print("Solução não encontrada")
     
-    number_of_queens = 8
-    population_size = 100
+def show_board(chromosome, number_of_queens):
+    """
+    Printa o tabuleiro com a solução de um cromossomo
+    Parâmetros:
+    chromosome -- np.array com a posição de cada rainha no tabuleiro
+    number_of_queens -- inteiro com a qnt de damas
+    Retorna:
+    None.
+    """
+    board = []
+    
+    for x in range(number_of_queens):
+        board.append(["x"] * number_of_queens)
+        
+    for i in range(number_of_queens):
+        board[chromosome[i]][i]="Q" 
+        
+    for row in board:
+        print (" ".join(row))  
+
+def main():    
+    number_of_queens = 9
+    population_size = 50
     mutation_probability = 0.1
     max_fitness = (number_of_queens*(number_of_queens-1))/2     
     population = [create_chromosome(number_of_queens) for i in range(population_size)]    
@@ -188,36 +194,19 @@ def main():
         print("----- Geração {} -----".format(numbers_of_generations))
         print("")
         population = epochs(population, mutation_probability)    
-
-        print("Fitness maxima atual = {}".format(max([fitness(n) for n in population])))
-
+        fitness_list = [fitness(chromosome) for chromosome in population]
+        print("Fitness maxima atual = {}".format(max(fitness_list)))
+        print("Fitness média ", np.mean(fitness_list))
         numbers_of_generations += 1
         if numbers_of_generations > 1000:
             break
         print([fitness(chromosome) for chromosome in population])
-    """
-    for chrom in population:
-        if fitness(chrom) == max_fitness:
-            print("");
-            print("One of the solutions: ")
-            chrom_out = chrom
-            print_chromosome(chrom)
-            
-    board = []
+    
+    print("Solução encontrada na geração {}".format(numbers_of_generations))
+    possible_solution = solution(population, max_fitness)
+    print("Uma solução possível para o problema de {}-damas é {}".format(number_of_queens,
+                                                                         possible_solution))
+    show_board(possible_solution, number_of_queens)
 
-    for x in range(number_of_queens):
-        board.append(["x"] * number_of_queens)
-        
-    for i in range(number_of_queens):
-        board[chrom_out[i]][i]="Q"
-            
-
-    def print_board(board):
-        for row in board:
-            print (" ".join(row))
-            
-    print()
-    print_board(board)
-    """
 if __name__ == "__main__":
     main()

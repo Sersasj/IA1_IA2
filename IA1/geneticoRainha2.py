@@ -60,6 +60,14 @@ def mutate(chromosome):
     return chromosome
 
 def has_repeating_numbers(array):
+    """
+    Verifica se um array tem elementos repetidos
+    Parâmetros:    
+    array -- np.array
+    Retorna:
+    True se existe um elemento repetido
+    False se não
+    """
     unique_elements, counts = np.unique(array, return_counts=True)
     return np.any(counts > 1)
 
@@ -184,7 +192,7 @@ def show_board(chromosome, number_of_queens):
 
 def main():    
     number_of_queens = 9
-    population_size = 50
+    population_size = 100
     mutation_probability = 0.1
     max_fitness = (number_of_queens*(number_of_queens-1))/2     
     population = [create_chromosome(number_of_queens) for i in range(population_size)]    

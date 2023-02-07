@@ -7,7 +7,7 @@ Created on Sun Feb  5 22:19:19 2023
 
 import random
 import numpy as np
-
+import sys
 def create_chromosome(number_of_queens):
     """
     Cria um cromossomo aleatório com as possíveis posições das damas
@@ -120,6 +120,8 @@ def roullete_pick(population):
     probabilities = [prob/total for prob in probabilities]
     idx = np.random.choice(len(population), 1, p=probabilities)
     return idx[0]
+
+
    
 def epochs(population, mutation_probability):
     """
@@ -191,7 +193,23 @@ def show_board(chromosome, number_of_queens):
         print (" ".join(row))  
 
 def main():    
-    number_of_queens = 8
+    print("---------------------------------------")
+    print("| Selecione a complexidade do problema|")
+    print("| 1 - Complexidade baixa - 6 damas    |")
+    print("| 2 - Complexidade média - 8 damas   |")
+    print("| 3 - Complexidade alta - 10 damas    |")
+    print("---------------------------------------")
+    selection = int(input("Digite sua opção: "))
+    if selection == 1:
+        number_of_queens = 6
+    elif selection == 2:
+        number_of_queens = 8
+    elif selection == 3:
+        number_of_queens = 10
+    else:
+        print("Opção inválida")
+        sys.exit()
+
     population_size = 100
     mutation_probability = 0.1
     max_fitness = (number_of_queens*(number_of_queens-1))/2     
@@ -203,12 +221,14 @@ def main():
         print("")
         population = epochs(population, mutation_probability)    
         fitness_list = [fitness(chromosome) for chromosome in population]
-        print("Fitness maxima atual = {}".format(max(fitness_list)))
+        best_chromossome = fitness_list.index(max(fitness_list))
+        
+        print("Cromossomo com maior fitness maxima atual: ")
+        show_chromosome(population[best_chromossome])
         print("Fitness média ", np.mean(fitness_list))
         numbers_of_generations += 1
         if numbers_of_generations > 1000:
             break
-        print([fitness(chromosome) for chromosome in population])
     
     print("Solução encontrada na geração {}".format(numbers_of_generations))
     possible_solution = solution(population, max_fitness)

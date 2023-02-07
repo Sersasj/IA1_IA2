@@ -7,8 +7,7 @@ Created on Mon Feb  6 12:02:47 2023
 """
 import numpy as np
 import random
-import math
-
+import sys
 
 def conflicts(board):
     """
@@ -43,8 +42,8 @@ def generate_board(number_of_queens):
     np.random.shuffle(board)
     return board    
 
-def tabu_search(number_of_queens, tabu_list_size=100):
-    """
+def tabu_search(number_of_queens, tabu_list_size):
+    """'
     Realiza a busca tabu
     Parâmetros:
     number_of_queens -- quantidade de damas no tabuleiro 
@@ -55,18 +54,19 @@ def tabu_search(number_of_queens, tabu_list_size=100):
     """
     
     board = generate_board(number_of_queens)
-    best = board[:]
+    best = board
     best_conflicts = conflicts(best)
     tabu_list = []
+    iterations = 0
     while best_conflicts != 0:
-        print(best_conflicts)  
+        print("Iteração {}, menor quantidade de conflitos atual {}".format(iterations, best_conflicts))  
         row, column = random.sample(range(number_of_queens), 2) 
         current = best[row]
         best[row] = column
         current_conflicts = conflicts(best)
         if current_conflicts < best_conflicts:
             best_conflicts = current_conflicts
-            tabu_list.append(best[:])
+            tabu_list.append(best)
             if len(tabu_list) > tabu_list_size:
                 tabu_list.pop(0)
         else:
@@ -82,7 +82,7 @@ def tabu_search(number_of_queens, tabu_list_size=100):
             current_conflicts = conflicts(best)
             if current_conflicts < best_conflicts and neighbor not in tabu_list:
                 best_conflicts = current_conflicts
-                tabu_list.append(best[:])
+                tabu_list.append(best)
                 if len(tabu_list) > tabu_list_size:
                     tabu_list.pop(0)
                 found_best = True
@@ -92,6 +92,7 @@ def tabu_search(number_of_queens, tabu_list_size=100):
         if not found_best:
             best = generate_board(number_of_queens)
             best_conflicts = conflicts(best)
+        iterations += 1 
     return best
 
 def show_board(board, number_of_queens):
@@ -117,8 +118,23 @@ def show_board(board, number_of_queens):
 
 
 def main():   
-    number_of_queens = 8    
-    solution = tabu_search(number_of_queens)
+    print("---------------------------------------")
+    print("| Selecione a complexidade do problema|")
+    print("| 1 - Complexidade baixa - 8 damas    |")
+    print("| 2 - Complexidade média - 12 damas   |")
+    print("| 3 - Complexidade alta - 16 damas    |")
+    print("---------------------------------------")
+    selection = int(input("Digite sua opção: "))
+    if selection == 1:
+        number_of_queens = 8
+    elif selection == 2:
+        number_of_queens = 12
+    elif selection == 3:
+        number_of_queens = 16
+    else:
+        print("Opção inválida")
+        sys.exit()
+    solution = tabu_search(number_of_queens, 100)
     print("Uma solução possível para o problema de {}-damas é {}".format(number_of_queens,
                                                                          solution))    
     show_board(solution, number_of_queens)

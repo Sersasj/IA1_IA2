@@ -11,10 +11,10 @@
 - Bonificação (quando permanece na Série A)
 
 ### Decisões (Nós de Decisão):
-- Vencer
-- Rebaixamento
-- Neutro
-- Classificar (? top 4 ?)
+- Flamengo ser Campeão
+- São Paulo ser Campeão
+- Palmeiras ser Campeão
+- Classificar (? top ?)
 
 ### Utilidade (Nós de Utilidade):
  * Útil para se ter a dimensão em qual dos times investir e/ou torcer no ano atual do campeonato.

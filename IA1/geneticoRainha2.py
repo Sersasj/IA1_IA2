@@ -4,10 +4,12 @@ Created on Sun Feb  5 22:19:19 2023
 
 @author: sergi
 """
-
+import time
 import random
 import numpy as np
 import sys
+import matplotlib.pyplot as plt
+
 def create_chromosome(number_of_queens):
     """
     Cria um cromossomo aleatório com as possíveis posições das damas
@@ -172,6 +174,47 @@ def solution(population, max_fitness):
             return chromosome
     print("Solução não encontrada")
     
+def time_test():
+    """
+    Testa o tempo médio de execução para o problema de n-rainhas de 4...10
+    Plota um gráfico com o tempo médio
+    Retorna:
+    None
+    """
+    # Resultado
+    #[0.0011059000001296226, 0.001464750000013737, 1.4886926599999242, 0.9575531100000717, 9.563682670000025, 17.365219170000092, 79.44766261000004]
+    population_size = 100
+    result = []
+    
+    for number_of_queens in range(4,11):   
+        time_list = []
+        for i in range(10):
+            start = time.perf_counter()
+            numbers_of_generations = 1
+            mutation_probability = 0.1
+            max_fitness = (number_of_queens*(number_of_queens-1))/2     
+            population = [create_chromosome(number_of_queens) for i in range(population_size)]    
+            while not max_fitness in [fitness(chromosome) for chromosome in population]:
+                population = epochs(population, mutation_probability)    
+                fitness_list = [fitness(chromosome) for chromosome in population]
+                numbers_of_generations += 1
+    
+            end = time.perf_counter()
+            time_list.append(end-start)
+        result.append(np.mean(time_list))
+    print(result)
+    X = [4, 5, 6, 7, 8, 9, 10]
+    Y = result
+    plt.xticks(range(min(X), max(X)+1))
+
+    plt.plot(X, Y, label = "genético")    
+
+    plt.title("Tempo de execução - Comparação")    
+    plt.xlabel("Número de damas")
+    plt.ylabel("Tempo (em segundos)")
+    plt.savefig("time_of_execution.png",dpi=400)
+
+    
 def show_board(chromosome, number_of_queens):
     """
     Printa o tabuleiro com a solução de um cromossomo
@@ -193,6 +236,8 @@ def show_board(chromosome, number_of_queens):
         print (" ".join(row))  
 
 def main():    
+    time_test()
+    """
     print("---------------------------------------")
     print("| Selecione a complexidade do problema|")
     print("| 1 - Complexidade baixa - 6 damas    |")
@@ -227,14 +272,14 @@ def main():
         show_chromosome(population[best_chromossome])
         print("Fitness média ", np.mean(fitness_list))
         numbers_of_generations += 1
-        if numbers_of_generations > 1000:
-            break
+        #if numbers_of_generations > 1000:
+        #    break
     
     print("Solução encontrada na geração {}".format(numbers_of_generations))
     possible_solution = solution(population, max_fitness)
     print("Uma solução possível para o problema de {}-damas é {}".format(number_of_queens,
                                                                          possible_solution))
     show_board(possible_solution, number_of_queens)
-
+    """
 if __name__ == "__main__":
     main()

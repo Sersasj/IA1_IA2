@@ -8,6 +8,8 @@ Created on Mon Feb  6 12:02:47 2023
 import numpy as np
 import random
 import sys
+import time
+import matplotlib.pyplot as plt
 
 def conflicts(board):
     """
@@ -59,7 +61,7 @@ def tabu_search(number_of_queens, tabu_list_size):
     tabu_list = []
     iterations = 0
     while best_conflicts != 0:
-        print("Iteração {}, menor quantidade de conflitos atual {}".format(iterations, best_conflicts))  
+        #print("Iteração {}, menor quantidade de conflitos atual {}".format(iterations, best_conflicts))  
         row, column = random.sample(range(number_of_queens), 2) 
         current = best[row]
         best[row] = column
@@ -115,9 +117,39 @@ def show_board(board, number_of_queens):
     for row in board_solution:
         print (" ".join(row))  
         
+def time_test():
+    """
+    Testa o tempo médio de execução para o problema de n-rainhas de 4...14
+    Plota um gráfico com o tempo médio
+    Retorna:
+    None
+    """
+    #[0.001334849999994958, 0.0010872799999987136, 0.0188632699999971, 0.03865948000000401, 0.10604329999999607, 0.3117452799999995, 3.8193840500000023, 9.175329600000003, 37.35564776, 34.212411299999985, 304.13998848999995]
+    
+    result = []    
+    for number_of_queens in range(4,15):   
+        print(number_of_queens)
+        time_list = []
+        for i in range(10):
+            start = time.perf_counter()
+            tabu_search(number_of_queens, 100)
+            end = time.perf_counter()
+            time_list.append(end-start)
+        result.append(np.mean(time_list))
+    print(result)
+    X = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    plt.xticks(range(min(X), max(X)+1))
 
+    Y = result
+    plt.plot(X, Y)    
+    plt.title("Tempo de execução - Busca Tabu")    
+    plt.xlabel("Número de damas")
+    plt.ylabel("Tempo (em segundos)")
+    plt.savefig("time_of_execution.png", dpi = 400)
 
 def main():   
+    time_test()
+    """
     print("---------------------------------------")
     print("| Selecione a complexidade do problema|")
     print("| 1 - Complexidade baixa - 8 damas    |")
@@ -138,7 +170,7 @@ def main():
     print("Uma solução possível para o problema de {}-damas é {}".format(number_of_queens,
                                                                          solution))    
     show_board(solution, number_of_queens)
-
+    """
 
 if __name__ == "__main__":
     main()

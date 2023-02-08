@@ -186,7 +186,7 @@ def time_test():
     population_size = 100
     result = []
     
-    for number_of_queens in range(4,11):   
+    for number_of_queens in range(11,12):   
         time_list = []
         for i in range(10):
             start = time.perf_counter()
@@ -201,9 +201,10 @@ def time_test():
     
             end = time.perf_counter()
             time_list.append(end-start)
+            print(time_list)
         result.append(np.mean(time_list))
     print(result)
-    X = [4, 5, 6, 7, 8, 9, 10]
+    X = [4, 5, 6, 7, 8, 9, 10, 11]
     Y = result
     plt.xticks(range(min(X), max(X)+1))
 
@@ -235,9 +236,10 @@ def show_board(chromosome, number_of_queens):
     for row in board:
         print (" ".join(row))  
 
-def main():    
-    time_test()
-    """
+def main():  
+    
+    #time_test()
+    
     print("---------------------------------------")
     print("| Selecione a complexidade do problema|")
     print("| 1 - Complexidade baixa - 6 damas    |")
@@ -280,6 +282,6 @@ def main():
     print("Uma solução possível para o problema de {}-damas é {}".format(number_of_queens,
                                                                          possible_solution))
     show_board(possible_solution, number_of_queens)
-    """
+    
 if __name__ == "__main__":
     main()

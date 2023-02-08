@@ -61,7 +61,7 @@ def tabu_search(number_of_queens, tabu_list_size):
     tabu_list = []
     iterations = 0
     while best_conflicts != 0:
-        #print("Iteração {}, menor quantidade de conflitos atual {}".format(iterations, best_conflicts))  
+        print("Iteração {}, menor quantidade de conflitos atual {}".format(iterations, best_conflicts))  
         row, column = random.sample(range(number_of_queens), 2) 
         current = best[row]
         best[row] = column
@@ -148,8 +148,8 @@ def time_test():
     plt.savefig("time_of_execution.png", dpi = 400)
 
 def main():   
-    time_test()
-    """
+    #time_test()
+    
     print("---------------------------------------")
     print("| Selecione a complexidade do problema|")
     print("| 1 - Complexidade baixa - 8 damas    |")
@@ -170,7 +170,7 @@ def main():
     print("Uma solução possível para o problema de {}-damas é {}".format(number_of_queens,
                                                                          solution))    
     show_board(solution, number_of_queens)
-    """
+    
 
 if __name__ == "__main__":
     main()

@@ -182,11 +182,11 @@ def time_test():
     None
     """
     # Resultado
-    #[0.0011059000001296226, 0.001464750000013737, 1.4886926599999242, 0.9575531100000717, 9.563682670000025, 17.365219170000092, 79.44766261000004]
+    Y1 = [0.0011059000001296226, 0.001464750000013737, 1.4886926599999242, 0.9575531100000717, 9.563682670000025, 17.365219170000092, 79.44766261000004, 263.24039344]
     population_size = 100
     result = []
-    
-    for number_of_queens in range(11,12):   
+    """
+    for number_of_queens in range(4,12):   
         time_list = []
         for i in range(10):
             start = time.perf_counter()
@@ -204,16 +204,22 @@ def time_test():
             print(time_list)
         result.append(np.mean(time_list))
     print(result)
-    X = [4, 5, 6, 7, 8, 9, 10, 11]
-    Y = result
-    plt.xticks(range(min(X), max(X)+1))
+    """
+    X1= [4, 5, 6, 7, 8, 9, 10, 11]
+    X2 = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    Y2 = [0.001334849999994958, 0.0010872799999987136, 0.0188632699999971, 0.03865948000000401, 0.10604329999999607, 0.3117452799999995, 3.8193840500000023, 9.175329600000003, 37.35564776, 34.212411299999985, 304.13998848999995]
 
-    plt.plot(X, Y, label = "genético")    
+    #Y = result
+    plt.xticks(range(min(X2), max(X2)+1))
 
+    plt.plot(X1, Y1, label = "genético")    
+    plt.plot(X2, Y2, label = "tabu")    
+    
+    plt.legend()
     plt.title("Tempo de execução - Comparação")    
     plt.xlabel("Número de damas")
     plt.ylabel("Tempo (em segundos)")
-    plt.savefig("time_of_execution.png",dpi=400)
+    plt.savefig("time_of_execution_comparition.png",dpi=400)
 
     
 def show_board(chromosome, number_of_queens):
@@ -238,8 +244,8 @@ def show_board(chromosome, number_of_queens):
 
 def main():  
     
-    #time_test()
-    
+    time_test()
+    """
     print("---------------------------------------")
     print("| Selecione a complexidade do problema|")
     print("| 1 - Complexidade baixa - 6 damas    |")
@@ -282,6 +288,6 @@ def main():
     print("Uma solução possível para o problema de {}-damas é {}".format(number_of_queens,
                                                                          possible_solution))
     show_board(possible_solution, number_of_queens)
-    
+    """
 if __name__ == "__main__":
     main()

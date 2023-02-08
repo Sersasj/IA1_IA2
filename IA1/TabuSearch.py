@@ -61,7 +61,7 @@ def tabu_search(number_of_queens, tabu_list_size):
     tabu_list = []
     iterations = 0
     while best_conflicts != 0:
-        print("Iteração {}, menor quantidade de conflitos atual {}".format(iterations, best_conflicts))  
+        #print("Iteração {}, menor quantidade de conflitos atual {}".format(iterations, best_conflicts))  
         row, column = random.sample(range(number_of_queens), 2) 
         current = best[row]
         best[row] = column
@@ -124,7 +124,7 @@ def time_test():
     Retorna:
     None
     """
-    #[0.001334849999994958, 0.0010872799999987136, 0.0188632699999971, 0.03865948000000401, 0.10604329999999607, 0.3117452799999995, 3.8193840500000023, 9.175329600000003, 37.35564776, 34.212411299999985, 304.13998848999995]
+    #[0.001334849999994958, 0.0010872799999987136, 0.0188632699999971, 0.03865948000000401, 0.10604329999999607, 0.3117452799999995, 3.8193840500000023, 9.175329600000003, 37.35564776, 97.81705510999946, 304.13998848999995]
     
     result = []    
     for number_of_queens in range(4,15):   
@@ -135,8 +135,10 @@ def time_test():
             tabu_search(number_of_queens, 100)
             end = time.perf_counter()
             time_list.append(end-start)
+            print(time_list)
         result.append(np.mean(time_list))
     print(result)
+    
     X = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
     plt.xticks(range(min(X), max(X)+1))
 
@@ -145,7 +147,7 @@ def time_test():
     plt.title("Tempo de execução - Busca Tabu")    
     plt.xlabel("Número de damas")
     plt.ylabel("Tempo (em segundos)")
-    plt.savefig("time_of_execution.png", dpi = 400)
+    plt.savefig("time_of_execution_tabu.png", dpi = 400)
 
 def main():   
     #time_test()

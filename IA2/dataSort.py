@@ -34,5 +34,5 @@ mean_data = mean_data.iloc[9:]
 
 mean_data = df.groupby(["category" ]).mean()
 
-mean_data.to_csv('mean_data_.csv', index=False)
+mean_data.to_csv('mean_dataaaa_.csv', index=False)
 

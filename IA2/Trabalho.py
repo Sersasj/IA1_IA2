@@ -4,6 +4,8 @@ import csv
 from unidecode import unidecode
 import unicodedata
 import numpy as np
+from tabulate import tabulate
+
 # Carrega dados dos anos 2019, 2020 e 2021
 df_brasileirao = pd.read_csv('dataset/brasileirao.csv')
 df_brasileirao = df_brasileirao[df_brasileirao['year'].isin([2019,2020,2021])]
@@ -41,7 +43,7 @@ df_brasileirao = df_brasileirao[df_brasileirao['club_name'].isin(clubes)]
 
 # Discretiza informações
 df_brasileirao["category"] = "neutro"
-df_brasileirao.loc[df_brasileirao["position"] <= 4, "category"] = "G4"
+df_brasileirao.loc[df_brasileirao["position"] <= 6, "category"] = "G6"
 df_brasileirao.loc[df_brasileirao["position"] >= 16, "category"] = "rebaixado"
 
 
@@ -76,16 +78,18 @@ def calculate_utility(club_name, mean_table, team_table):
         probs[i] = overall + pace + shooting + passing + defending
         
         
+    tab = [ [club_name, probs[0], probs[1], probs[2]] ]
+    print(tabulate(tab, headers=["Time", "Entre G4", "Neutro", "Rebaixar"], floatfmt=".3f", tablefmt='pretty'))
+
     team_position = np.argmax(probs)
 
     if team_position == 0:        
-        print("O {} terminará o campeonato no G4".format(club_name))
+        print("Maior prabilidade de {} terminar o campeonato no G6\n".format(club_name))
     elif team_position == 1:        
-        print("O {} terminará o campeonato neutro".format(club_name))
+        print("Maior prabilidade de {} terminar o campeonato neutro\n".format(club_name))
     else:
-        print("O {} terminará o campeonato na zona de rebaixamento".format(club_name))
-        
-    print("Função utilidade: ",probs) 
+        print("Maior prabilidade de {} terminar o campeonato na zona de rebaixamento\n".format(club_name))
+    
 
 
 

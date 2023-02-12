@@ -73,8 +73,13 @@ def tabu_search(number_of_queens, tabu_list_size):
                 tabu_list.pop(0)
         else:
             best[row] = current
-            
-        neighbors = [[row, column] for c in range(number_of_queens) if c != current]
+        
+        
+        neighbors = []
+        for row in range(number_of_queens):
+            for col in range(number_of_queens):
+                if col != board[row]:
+                    neighbors.append([row, col])
         random.shuffle(neighbors)
         found_best = False
         for neighbor in neighbors:
@@ -124,10 +129,10 @@ def time_test():
     Retorna:
     None
     """
-    #[0.001334849999994958, 0.0010872799999987136, 0.0188632699999971, 0.03865948000000401, 0.10604329999999607, 0.3117452799999995, 3.8193840500000023, 9.175329600000003, 37.35564776, 97.81705510999946, 304.13998848999995]
+    #[0.001510980000057316, 0.0007360300000982534, 0.009396700000070268, 0.003339529999993829, 0.021564649999891116, 0.03916655000011815, 0.07427775000014662, 0.29064774999988, 0.4338777799997843, 1.2235866399998485, 0.6541262300001108, 1.1291463499999737, 1.53389731999996, 3.243015809999997, 4.662620190000143, 5.724850140000035, 8.598034040000039, 13.966681619999964, 9.650818270000036, 23.682048569999914, 18.096272280000175, 23.467372909999995, 54.86084674999984, 48.83943778999992, 45.40461950999979, 64.13960396000002, 103.98695192000005, 169.64559652000042]
     
     result = []    
-    for number_of_queens in range(4,15):   
+    for number_of_queens in range(4,32):   
         print(number_of_queens)
         time_list = []
         for i in range(10):
@@ -138,13 +143,15 @@ def time_test():
             print(time_list)
         result.append(np.mean(time_list))
     print(result)
+    X1 = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    plt.xticks(range(min(X1), max(X1)+1))
+    Y1 = result
     
-    X = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-    plt.xticks(range(min(X), max(X)+1))
+    plt.xticks(fontsize=6)
 
-    Y = result
-    plt.plot(X, Y)    
-    plt.title("Tempo de execução - Busca Tabu")    
+    plt.plot(X1, Y1)
+
+    plt.title("Tempo de execução - Comparação")    
     plt.xlabel("Número de damas")
     plt.ylabel("Tempo (em segundos)")
     plt.savefig("time_of_execution_tabu.png", dpi = 400)
@@ -154,17 +161,17 @@ def main():
     
     print("---------------------------------------")
     print("| Selecione a complexidade do problema|")
-    print("| 1 - Complexidade baixa - 8 damas    |")
-    print("| 2 - Complexidade média - 12 damas   |")
-    print("| 3 - Complexidade alta - 16 damas    |")
+    print("| 1 - Complexidade baixa - 12 damas    |")
+    print("| 2 - Complexidade média - 18 damas   |")
+    print("| 3 - Complexidade alta - 22 damas    |")
     print("---------------------------------------")
     selection = int(input("Digite sua opção: "))
     if selection == 1:
-        number_of_queens = 8
-    elif selection == 2:
         number_of_queens = 12
+    elif selection == 2:
+        number_of_queens = 18
     elif selection == 3:
-        number_of_queens = 16
+        number_of_queens = 24
     else:
         print("Opção inválida")
         sys.exit()

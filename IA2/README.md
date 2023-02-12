@@ -31,10 +31,10 @@ Definir as estimativa de
 
 --------------
 ## Datasets
-[dataset/brasileirao.csv](./dataset/brasileirao.csv)
-[dataset_fifa/players_19.csv](./dataset_fifa/players_19.csv)
-[dataset_fifa/players_20.csv](./dataset_fifa/players_20.csv)
-[dataset_fifa/players_21.csv](./dataset_fifa/players_21.csv)
+- [dataset/brasileirao.csv](./dataset/brasileirao.csv)
+- [dataset_fifa/players_19.csv](./dataset_fifa/players_19.csv)
+- [dataset_fifa/players_20.csv](./dataset_fifa/players_20.csv)
+- [dataset_fifa/players_21.csv](./dataset_fifa/players_21.csv)
 
 ## Decisão
 Ao final é apresentado três casos de teste.

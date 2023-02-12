@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Feb  5 22:19:19 2023
-
-@author: sergi
-"""
 import time
 import random
 import numpy as np

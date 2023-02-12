@@ -1,3 +1,8 @@
+### 9806/01 - APREND.MAQ.E MODEL.CONHECIM.INCERTO
+Alunos:
+- Gabriel Thiago - RA: 107774
+- Sergio Alvarez - RA: 115735
+
 # Problema
 Um especialista precisa de ajuda para estimativa das decisões na tabela de um determinado time
 

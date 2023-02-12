@@ -1,8 +1,5 @@
 pandas
 natsort
-csv
 unidecode
-unicodedata
 numpy
 tabulate
-os

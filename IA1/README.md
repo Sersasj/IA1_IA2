@@ -24,7 +24,7 @@ Busca com melhor local chegando ao global
 ## Requisitos
 São necessários os pacotes descritos em [Pacotes Requisitados](./requeriments.txt)
 ```bash
-pip3 install requeriments.txt
+pip3 install -r requeriments.txt
 ```
 
 ## Código

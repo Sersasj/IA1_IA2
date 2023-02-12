@@ -42,8 +42,12 @@ Definir as estimativa de
 - [dataset_fifa/players_21.csv](./dataset_fifa/players_21.csv)
 
 ## Decisão
+Útil para se ter a estimativa da dimensão em qual faixa na classificação determinado time estará ao final do campeonato
+Colaborando ao especialista em quais times prestar mais atenção para busca de um título ou rebaixamento por exemplo.
+
+### Exemplo prático com Utilidade
 Ao final é apresentado três casos de teste.
-Tendo então os seguintes times a serem estimados a decisão de sua classificação:
+Tendo então os seguintes times a serem estimados com a decisão de sua classificação:
 - Palmeiras
 - Santos
 - Atletico Goianiense

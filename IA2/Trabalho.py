@@ -5,9 +5,11 @@ from unidecode import unidecode
 import unicodedata
 import numpy as np
 from tabulate import tabulate
+import os 
 
-# Carrega dados dos anos 2019, 2020 e 2021
-df_brasileirao = pd.read_csv('dataset/brasileirao.csv')
+# Carrega dados dos anos 2019, 2020 e 2021 - (windows/linux)
+data_path = os.path.join(os.path.dirname(__file__), "dataset", "brasileirao.csv")
+df_brasileirao = pd.read_csv(data_path)
 df_brasileirao = df_brasileirao[df_brasileirao['year'].isin([2019,2020,2021])]
 # Muda coluna do nome
 df_brasileirao.rename(columns={'team': 'club_name'}, inplace=True)
@@ -20,10 +22,13 @@ df_brasileirao.rename(columns={'team': 'club_name'}, inplace=True)
 times_brasileirao = df_brasileirao['club_name'].tolist()
 times_brasileirao = list(set(times_brasileirao))
 
-# Carrega dados para df
-df1 = pd.read_csv("dataset_fifa/players_19.csv")
-df2 = pd.read_csv("dataset_fifa/players_20.csv")
-df3 = pd.read_csv("dataset_fifa/players_21.csv")
+# Carrega dados para df - (windows/linux)
+data_path = os.path.join(os.path.dirname(__file__), "dataset_fifa", "players_19.csv")
+df1 = pd.read_csv(data_path)
+data_path = os.path.join(os.path.dirname(__file__), "dataset_fifa", "players_20.csv")
+df2 = pd.read_csv(data_path)
+data_path = os.path.join(os.path.dirname(__file__), "dataset_fifa", "players_21.csv")
+df3 = pd.read_csv(data_path)
 df_players = pd.concat([df1,df2,df3])
 
 
@@ -78,8 +83,8 @@ def calculate_utility(club_name, mean_table, team_table):
         probs[i] = overall + pace + shooting + passing + defending
         
         
-    tab = [ [club_name, probs[0], probs[1], probs[2]] ]
-    print(tabulate(tab, headers=["Time", "Entre G4", "Neutro", "Rebaixar"], floatfmt=".3f", tablefmt='pretty'))
+    tab = [ [club_name, "{:.4f}".format(probs[0]), "{:.4f}".format(probs[1]), "{:.4f}".format(probs[2])] ]
+    print(tabulate(tab, headers=["Time", "Entre G4", "Neutro", "Rebaixar"],  tablefmt='pretty'))
 
     team_position = np.argmax(probs)
 

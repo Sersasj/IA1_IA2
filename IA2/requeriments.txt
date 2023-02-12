@@ -5,3 +5,4 @@ unidecode
 unicodedata
 numpy
 tabulate
+os

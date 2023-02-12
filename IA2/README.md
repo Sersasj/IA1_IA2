@@ -15,7 +15,7 @@ Com base no elenco de jogadores do time, temos:
 - Passes completos (Passing); e
 - Defesas (Defending).
 
-# Ações Disponíveis
+## Ações Disponíveis
 Definir as estimativa de
  
 - Time estar no G4   - Classificação de 1 ao 6

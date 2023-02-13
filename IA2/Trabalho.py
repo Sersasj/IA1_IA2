@@ -84,7 +84,7 @@ def calculate_utility(club_name, mean_table, team_table):
         
         
     tab = [ [club_name, "{:.4f}".format(probs[0]), "{:.4f}".format(probs[1]), "{:.4f}".format(probs[2])] ]
-    print(tabulate(tab, headers=["Time", "Entre G4", "Neutro", "Rebaixar"],  tablefmt='pretty'))
+    print(tabulate(tab, headers=["Time", "Entre G6", "Neutro", "Rebaixar"],  tablefmt='pretty'))
 
     team_position = np.argmax(probs)
 

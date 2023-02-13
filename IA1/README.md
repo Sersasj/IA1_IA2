@@ -28,10 +28,9 @@ pip3 install -r requeriments.txt
 ```
 
 ## Código
-Utilize o Python3 para executar o código do [GeneticoRainha](./geneticoRainha.py), [TabuSearch](./TabuSearch.py)
+Utilize o Python3 para executar o código do [GeneticoRainha](./geneticoRainha.py):
 ```python
 python3 GeneticoRainha.py
-python3 GeneticoRainha2.py
 python3 TabuSearch.py
 ```
 

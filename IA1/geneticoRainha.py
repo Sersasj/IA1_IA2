@@ -85,8 +85,10 @@ def reproduce(parent_chromosome_1, parent_chromosome_2):
         crossover_point = random.randint(0, len(parent_chromosome_1)-1)
         offspring_chromosome_1 = np.concatenate((parent_chromosome_1[:crossover_point], parent_chromosome_2[crossover_point:]))
         offspring_chromosome_2 = np.concatenate((parent_chromosome_2[:crossover_point], parent_chromosome_1[crossover_point:]))
-
+    
+    print(crossover_point)
     return offspring_chromosome_1, offspring_chromosome_2
+
 
 def probability(chromosome):
     """
@@ -233,7 +235,7 @@ def show_board(chromosome, number_of_queens):
         print (" ".join(row))  
 
 def main():  
-    
+    fit = []
     #time_test()
     
     print("---------------------------------------")
@@ -253,7 +255,7 @@ def main():
         print("Opção inválida")
         sys.exit()
 
-    population_size = 100
+    population_size = 10
     mutation_probability = 0.1
     max_fitness = (number_of_queens*(number_of_queens-1))/2     
     population = [create_chromosome(number_of_queens) for i in range(population_size)]    
@@ -269,6 +271,7 @@ def main():
         print("Cromossomo com maior fitness maxima atual: ")
         show_chromosome(population[best_chromossome])
         print("Fitness média ", np.mean(fitness_list))
+        fit.append(np.mean(fitness_list))
         numbers_of_generations += 1
         #if numbers_of_generations > 1000:
         #    break
@@ -278,6 +281,6 @@ def main():
     print("Uma solução possível para o problema de {}-damas é {}".format(number_of_queens,
                                                                          possible_solution))
     show_board(possible_solution, number_of_queens)
-    
+    #print(fit)
 if __name__ == "__main__":
     main()

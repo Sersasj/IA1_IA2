@@ -71,15 +71,20 @@ def calculate_utility(club_name, mean_table, team_table):
     shooting_team = np.array(team_table['shooting'].tolist())/100
     passing_team = np.array(team_table['passing'].tolist())/100
     defending_team = np.array(team_table['defending'].tolist())/100 
-    
 
+    
+    prob_overall = [0.96, 0.95, 0.85]    
+    prob_pace = [0.93, 0.83, 0.9]
+    prob_shooting = [0.82, 0.88, 0.92]
+    prob_passing = [0.8, 0.84, 0.9]
+    prob_defeding = [0.74, 0.65, 0.7]
     probs = np.zeros(3)
     for i in range(3):
-        overall = (1 - abs((overall_probs[i] - overall_team)) / overall_probs[i]) * 0.3 
-        pace = (1 - abs((pace_probs[i] - pace_team))/ pace_probs[i]) * 0.1
-        shooting = (1 - abs((shooting_probs[i] - shooting_team)) / shooting_probs[i]) * 0.35 
-        passing = (1 - ((passing_probs[i] - passing_team)) / passing_probs[i]) * 0.1
-        defending = (1 - abs((defending_probs[i] - defending_team)) / defending_probs[i]) * 0.15 
+        overall = prob_overall[i] * (1 - abs((overall_probs[i] - overall_team)) / overall_probs[i]) * 0.3 
+        pace = prob_pace[i] * (1 - abs((pace_probs[i] - pace_team))/ pace_probs[i]) * 0.1
+        shooting = prob_shooting [i] * (1 - abs((shooting_probs[i] - shooting_team)) / shooting_probs[i]) * 0.35 
+        passing = prob_passing[i] * (1 - ((passing_probs[i] - passing_team)) / passing_probs[i]) * 0.1
+        defending = prob_defeding[i] * (1 - abs((defending_probs[i] - defending_team)) / defending_probs[i]) * 0.15 
         probs[i] = overall + pace + shooting + passing + defending
         
         

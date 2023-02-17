@@ -81,13 +81,13 @@ def reproduce(parent_chromosome_1, parent_chromosome_2):
     crossover_point = random.randint(0, len(parent_chromosome_1)-1)
     offspring_chromosome_1 = np.concatenate((parent_chromosome_1[:crossover_point], parent_chromosome_2[crossover_point:]))
     offspring_chromosome_2 = np.concatenate((parent_chromosome_2[:crossover_point], parent_chromosome_1[crossover_point:]))
-    while (has_repeating_numbers(offspring_chromosome_2) and has_repeating_numbers(offspring_chromosome_2)): 
-        crossover_point = random.randint(0, len(parent_chromosome_1)-1)
-        offspring_chromosome_1 = np.concatenate((parent_chromosome_1[:crossover_point], parent_chromosome_2[crossover_point:]))
-        offspring_chromosome_2 = np.concatenate((parent_chromosome_2[:crossover_point], parent_chromosome_1[crossover_point:]))
-    
-    print(crossover_point)
+    #while (has_repeating_numbers(offspring_chromosome_2) and has_repeating_numbers(offspring_chromosome_2)): 
+    #    crossover_point = random.randint(0, len(parent_chromosome_1)-1)
+    #    offspring_chromosome_1 = np.concatenate((parent_chromosome_1[:crossover_point], parent_chromosome_2[crossover_point:]))
+    #    offspring_chromosome_2 = np.concatenate((parent_chromosome_2[:crossover_point], parent_chromosome_1[crossover_point:]))
+
     return offspring_chromosome_1, offspring_chromosome_2
+
 
 
 def probability(chromosome):
@@ -119,7 +119,26 @@ def roullete_pick(population):
     idx = np.random.choice(len(population), 1, p=probabilities)
     return idx[0]
 
+def roulette_selection(population):
+    """
+    Seleciona um cromossomo da população
+    a escolha é feita com base no fitness de cada cromossomo
+    Parâmetros:
+    population -- lista com probabilidades
+    Retorna:
+    index do cromossomo selecionado
+    """    
+    probabilities = [probability(chromosome) for chromosome in population]
 
+    # Calculate the cumulative probabilities
+    cum_probs = [sum(probabilities[:i+1]) for i in range(len(probabilities))]
+    
+    # Generate a random number between 0 and 1
+    rand = random.uniform(0, cum_probs[-1])    
+    # Find the index corresponding to the random number
+    for i, cum_prob in enumerate(cum_probs):
+        if rand < cum_prob:
+            return i
    
 def epochs(population, mutation_probability):
     """
@@ -132,8 +151,8 @@ def epochs(population, mutation_probability):
     """
     new_population = []
     for i in range(len(population) // 2):
-        parent_chromosome_1 = population[roullete_pick(population)]
-        parent_chromosome_2 = population[roullete_pick(population)]
+        parent_chromosome_1 = population[roulette_selection(population)]
+        parent_chromosome_2 = population[roulette_selection(population)]
         offspring_chromosome_1, offspring_chromosome_2 = reproduce(parent_chromosome_1,
                                                                    parent_chromosome_2)
         if random.random() < mutation_probability:
@@ -184,7 +203,7 @@ def time_test():
     
     for number_of_queens in range(4,12):   
         time_list = []
-        for i in range(10):
+        for i in range(1):
             start = time.perf_counter()
             numbers_of_generations = 1
             mutation_probability = 0.1
@@ -194,7 +213,7 @@ def time_test():
                 population = epochs(population, mutation_probability)    
                 fitness_list = [fitness(chromosome) for chromosome in population]
                 numbers_of_generations += 1
-    
+                print(population)
             end = time.perf_counter()
             time_list.append(end-start)
             print(time_list)
@@ -235,9 +254,9 @@ def show_board(chromosome, number_of_queens):
         print (" ".join(row))  
 
 def main():  
-    fit = []
-    #time_test()
     
+    time_test()
+    """
     print("---------------------------------------")
     print("| Selecione a complexidade do problema|")
     print("| 1 - Complexidade baixa - 6 damas    |")
@@ -255,7 +274,7 @@ def main():
         print("Opção inválida")
         sys.exit()
 
-    population_size = 10
+    population_size = 100
     mutation_probability = 0.1
     max_fitness = (number_of_queens*(number_of_queens-1))/2     
     population = [create_chromosome(number_of_queens) for i in range(population_size)]    
@@ -271,7 +290,6 @@ def main():
         print("Cromossomo com maior fitness maxima atual: ")
         show_chromosome(population[best_chromossome])
         print("Fitness média ", np.mean(fitness_list))
-        fit.append(np.mean(fitness_list))
         numbers_of_generations += 1
         #if numbers_of_generations > 1000:
         #    break
@@ -281,6 +299,6 @@ def main():
     print("Uma solução possível para o problema de {}-damas é {}".format(number_of_queens,
                                                                          possible_solution))
     show_board(possible_solution, number_of_queens)
-    #print(fit)
+    """
 if __name__ == "__main__":
     main()

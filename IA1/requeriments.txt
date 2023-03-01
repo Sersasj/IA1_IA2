@@ -1,4 +1,2 @@
 numpy
 matplotlib
-typing
-statistics

@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Feb 16 22:34:22 2023
 
-@author: sergi
-"""
 import numpy as np
 import random
 import time
@@ -66,16 +62,12 @@ def roulette_selection(probabilities):
     Seleciona um cromossomo da população
     a escolha é feita com base no fitness de cada cromossomo
     Parâmetros:
-    population -- lista com probabilidades
+    probabilities -- lista com probabilidades
     Retorna:
     index do cromossomo selecionado
     """    
-    # Calculate the cumulative probabilities
-    cum_probs = [sum(probabilities[:i+1]) for i in range(len(probabilities))]
-    
-    # Generate a random number between 0 and 1
+    cum_probs = [sum(probabilities[:i+1]) for i in range(len(probabilities))]    
     rand = random.uniform(0, cum_probs[-1])    
-    # Find the index corresponding to the random number
     for i, cum_prob in enumerate(cum_probs):
         if rand < cum_prob:
             return i
@@ -90,13 +82,10 @@ def reproduce(parent1, parent2):
     chromosome1 :  cromossomo pai
     chromosome2 :  cromossomo mae
     Retorna:
-    cromossomos filho    
+    cromossomo filho    
     """
-    # select a random subset of values from parent 1
     subset = set(np.random.choice(parent1, len(parent1) // 2, replace=False))
-    # initialize offspring with subset from parent 1
     offspring = np.array([val if val in subset else None for val in parent1])
-    # fill remaining positions in offspring with values from parent 2
     i = 0
     for val in parent2:
         if val not in subset:
@@ -156,7 +145,7 @@ def solution(population, max_fitness):
     """
     Seleciona o cromossomo com uma solução do n-rainhas
     Parâmetros:
-    population -- lista com cromossomos
+    population -- np.array com os cromossomos
     max_fitness -- inteiro com o valor maximo do fitness
     Retorna:
     Cromossomo com uma solução do n-rainhas
@@ -174,8 +163,7 @@ def show_chromosome(chromosome):
     Retorna:
     None
     """
-    print("Cromossomo = {},  Fitness = {}".format(str(chromosome),
-                                                  fitness(chromosome)))
+    print("Cromossomo = {}".format(str(chromosome)))
     
 def show_board(chromosome, number_of_queens):
     """
@@ -203,7 +191,7 @@ def time_test():
     """
     # [0.001214039999993588, 0.0015303299999999353, 0.011732140000000868, 0.027880650000000173, 0.06255439999999908, 0.09307983999999862, 0.22705601000000114, 0.6774491000000011, 1.6124172499999987, 2.0004818399999977, 3.544387699999993, 8.044407640000008, 8.045281700000004, 18.34614865000002, 36.09995972, 50.40309513000004, 68.59274187000003, 102.83478264000007]
     
-    population_size = 100
+    population_size = 10
     result = [] 
     
     for number_of_queens in range(4,22):   
@@ -246,14 +234,14 @@ def main():
     print("---------------------------------------")
     print("| Selecione a complexidade do problema|")
     print("| 1 - Complexidade baixa - 10 damas    |")
-    print("| 2 - Complexidade média - 14 damas   |")
+    print("| 2 - Complexidade média - 15 damas   |")
     print("| 3 - Complexidade alta - 20 damas    |")
     print("---------------------------------------")
     selection = int(input("Digite sua opção: "))
     if selection == 1:
         number_of_queens = 10
     elif selection == 2:
-        number_of_queens = 14
+        number_of_queens = 15
     elif selection == 3:
         number_of_queens = 20
     else:
@@ -261,7 +249,7 @@ def main():
         sys.exit()
 
     population_size = 100
-    mutation_probability = 0.4
+    mutation_probability = 0.1
     population = np.zeros((population_size,number_of_queens))
     max_fitness = (number_of_queens*(number_of_queens-1))/2    
     numbers_of_generations = 1

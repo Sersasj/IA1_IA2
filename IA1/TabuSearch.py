@@ -54,7 +54,7 @@ def tabu_search(number_of_queens, tabu_list_size):
     tabu_list = []
     iterations = 0
     while best_conflicts != 0:
-        #print("Iteração {}, menor quantidade de conflitos atual {}".format(iterations, best_conflicts))  
+        print("Iteração {}, menor quantidade de conflitos atual {}".format(iterations, best_conflicts))  
         row, column = random.sample(range(number_of_queens), 2) 
         current = best[row]
         best[row] = column
@@ -80,7 +80,7 @@ def tabu_search(number_of_queens, tabu_list_size):
             current = best[row]
             best[row] = column
             current_conflicts = conflicts(best)
-            if current_conflicts < best_conflicts and neighbor not in tabu_list:
+            if current_conflicts < best_conflicts and any((arr != best).all() for arr in tabu_list):
                 best_conflicts = current_conflicts
                 tabu_list.append(best)
                 if len(tabu_list) > tabu_list_size:
@@ -88,7 +88,7 @@ def tabu_search(number_of_queens, tabu_list_size):
                 found_best = True
                 break
             else:
-                best[row] = current
+                best[row] = current            
         if not found_best:
             best = generate_board(number_of_queens)
             best_conflicts = conflicts(best)
@@ -117,11 +117,12 @@ def show_board(board, number_of_queens):
         
 def time_test():
     """
-    Testa o tempo médio de execução para o problema de n-rainhas de 4...14
+    Testa o tempo médio de execução para o problema de n-rainhas de 4...32
     Plota um gráfico com o tempo médio
     Retorna:
     None
     """
+    # Resultado 
     #[0.001510980000057316, 0.0007360300000982534, 0.009396700000070268, 0.003339529999993829, 0.021564649999891116, 0.03916655000011815, 0.07427775000014662, 0.29064774999988, 0.4338777799997843, 1.2235866399998485, 0.6541262300001108, 1.1291463499999737, 1.53389731999996, 3.243015809999997, 4.662620190000143, 5.724850140000035, 8.598034040000039, 13.966681619999964, 9.650818270000036, 23.682048569999914, 18.096272280000175, 23.467372909999995, 54.86084674999984, 48.83943778999992, 45.40461950999979, 64.13960396000002, 103.98695192000005, 169.64559652000042]
     
     result = []    

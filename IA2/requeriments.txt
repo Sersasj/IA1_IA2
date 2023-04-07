@@ -1,5 +1,0 @@
-pandas
-natsort
-unidecode
-numpy
-tabulate

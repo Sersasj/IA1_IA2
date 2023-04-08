@@ -235,7 +235,7 @@ if __name__ == '__main__':
 
     # instancia do Modelo com parametros
     # sem o solver e até 1000 iteracao estava com retorno de aviso que nao foi convergido para um resultado otimo
-    print("Criando Modelo!!\n")
+    print("Criando Modelo com Regressao Linear!\n")
     modelo = LogisticRegression(solver='saga', max_iter=5000)
 
     # treinar o modelo

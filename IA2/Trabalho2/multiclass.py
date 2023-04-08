@@ -49,11 +49,15 @@ def transformar_edjef(x):
 if __name__ == '__main__':
     test = pd.read_csv('test.csv')
     train = pd.read_csv('train.csv')
+    print("Importado arquivos!\n")
 
     # ====================================
     # Tratando as variaveis
 
+    print("Tratando variaveis!\n")
     # verifica nulos, "ascending" p no notebook python fica em ordem
+
+    print("Verificando nulos:\n")
     print(train.isnull().sum().sort_values(ascending=False))
     print()
 
@@ -68,7 +72,6 @@ if __name__ == '__main__':
     # edjefe em binario
     train['edjefe_binario'] = train['edjefe'].map(transformar_edjef)
     test['edjefe_binario'] = test['edjefe'].map(transformar_edjef)
-
 
     # idhogar: Identificador único do domicílio - "fd8a6d014" ... da problema no modelo
     # pode ter +1 familia na mesma casa
@@ -104,9 +107,11 @@ if __name__ == '__main__':
     train['v18q1'].fillna(0, inplace=True)
     test['v18q1'].fillna(0, inplace=True)
 
+    print("Verificando nulos:\n")
     print(train.isnull().sum().sort_values(ascending=False))
     # ====================================
 
+    print("Realizando ANALISES!\n")
     # Analises!
     # EDA - Exploratory Data Analysis
 
@@ -198,13 +203,14 @@ if __name__ == '__main__':
 
     # ====================================
     # Divisao de treino e validacao
+    print("Divisao de treino e validacao!\n")
 
     # seed para manter a aleatoriedade *===* troca pelo random_state
     # np.random.seed(0)
     # divisao 70/30 por ter um conjunto de dados "grande"
     X_treino, X_valid, y_treino, y_valid = train_test_split(X, y, test_size=0.3, random_state=0)
 
-    print(X_treino.shape, X_valid.shape, y_treino.shape, y_valid.shape)
+    # print(X_treino.shape, X_valid.shape, y_treino.shape, y_valid.shape)
     # (6689, 47) (2868, 47) (6689,) (2868,)
     
     # X Treino: 6689 exemplos de treino
@@ -229,6 +235,7 @@ if __name__ == '__main__':
 
     # instancia do Modelo com parametros
     # sem o solver e até 1000 iteracao estava com retorno de aviso que nao foi convergido para um resultado otimo
+    print("Criando Modelo!!\n")
     modelo = LogisticRegression(solver='saga', max_iter=5000)
 
     # treinar o modelo
@@ -238,6 +245,7 @@ if __name__ == '__main__':
     y_pred = modelo.predict(X_valid)
 
     # cálculo do f1 score macro
+    print("Gerando F1 score macro da predicao!")
     f1_macro = f1_score(y_valid, y_pred, average='macro')
     print('F1 score macro:', f1_macro)
 
@@ -251,6 +259,7 @@ if __name__ == '__main__':
     sub = pd.Series(p_final, index=test['Id'], name='Target')
     sub.shape
     sub.to_csv('subRegressao.csv', header=True)
+    print("\nArquivo subRegressao.csv criado do teste oficial!\n")
     # Nota no kaggle com regressao linear: 0.25569
     # Nota no kaggle da original: 0.19482
 

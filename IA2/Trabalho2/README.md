@@ -7,8 +7,20 @@
 
 - Introdução sobre o problema: https://www.kaggle.com/code/willkoehrsen/a-complete-introduction-and-walkthrough
 
-- Tenica originalmente utilizada (Técnica A): 
-- Tecnica A - Score: 0.19482
+- Tecnica sample submission - Score: 0.19482
+- Tecnicas utilizadas de acordo com a Intro (2 linha acima):
+  - Support Vector Classifier (Linear SVC) = 10 Fold CV Score: 0.28346 with std: 0.04484
+  - Gaussian Naive Bayes (GaussianNB) = 10 Fold CV Score: 0.17935 with std: 0.03867
+  - Multi-layer Perceptron classifier (MLPClassifier) = 10 Fold CV Score: 0.28674 with std: 0.06301
+  - Linear Discriminant Analysis (LDA) = 10 Fold CV Score: 0.32217 with std: 0.05984
+  - Ridge Classifier CrossValidation = 10 Fold CV Score: 0.27896 with std: 0.03675
+  - KNN
+    - KNN with 5 neighbors = 10 Fold CV Score: 0.35078 with std: 0.03829
+    - KNN with 10 neighbors = 10 Fold CV Score: 0.32153 with std: 0.03028
+    - KNN with 20 neighbors = 10 Fold CV Score: 0.31039 with std: 0.04974
+  - Extra-trees classifier = 10 Fold CV Score: 0.32215 with std: 0.04671
+  - 
+
 
 ----------------
 

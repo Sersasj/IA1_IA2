@@ -5,7 +5,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score
-from sklearn.model_selection import KFold, StratifiedKFold
 
 from pandas.plotting import scatter_matrix
 import matplotlib.pyplot as plt
@@ -22,19 +21,6 @@ def matrizDeDispersao(variaveis):
     plt.show()
 
 # Traformar em binário (dependency)
-
-def cross_val_score_model(model, X, y, n_splits=5):
-    # cv = KFold(n_splits=n_splits, shuffle=True, random_state=42)
-    cv = StratifiedKFold(n_splits=n_splits)
-    scores = []
-    for train_index, test_index in cv.split(X, y):
-        X_train, X_test = X.iloc[train_index], X.iloc[test_index]
-        y_train, y_test = y.iloc[train_index], y.iloc[test_index]
-        model.fit(X_train, y_train)
-        y_pred = model.predict(X_test)
-        score = f1_score(y_test, y_pred, average='macro')
-        scores.append(score)
-    return np.mean(scores), np.std(scores)
 
 
 def transformar_dependente(x):
@@ -62,7 +48,6 @@ def transformar_edjef(x):
         
 if __name__ == '__main__':
     test = pd.read_csv('test.csv')
-
     train = pd.read_csv('train.csv')
     print("Importado arquivos!\n")
 
@@ -197,7 +182,7 @@ if __name__ == '__main__':
     # obs.:
     # id: indexicacao => nao precisa usa no modelo
     # rez_esc: Anos de atraso escolar. == muito faltante melhor remover
-    # idhogar: Identificador único do domicílio --- pode ter +1 familia na mesma casa => tamanho_familia
+    # idhogar: Identificador único do domicílio --- pode ter +1 familia na mesma casa
     # Uso do dep_binario em vez do dependency
 
     # sem as obvias reduntantes**:
@@ -223,7 +208,7 @@ if __name__ == '__main__':
     # seed para manter a aleatoriedade *===* troca pelo random_state
     # np.random.seed(0)
     # divisao 70/30 por ter um conjunto de dados "grande"
-    # X_treino, X_valid, y_treino, y_valid = train_test_split(X, y, test_size=0.3, random_state=0)
+    X_treino, X_valid, y_treino, y_valid = train_test_split(X, y, test_size=0.3, random_state=0)
 
     # print(X_treino.shape, X_valid.shape, y_treino.shape, y_valid.shape)
     # (6689, 47) (2868, 47) (6689,) (2868,)
@@ -234,6 +219,16 @@ if __name__ == '__main__':
     # y Validacao: 2868 valor correspondente dos ex. de validacao
     # ====================================
     
+    # Treinamento e avaliação do modelo
+    #  * Exemplos
+    #    - Árvore de decisão
+    #    - Random Forest
+    #    - Naive Bayes
+    #    - Regressão Logística
+    #    - K-Nearest Neighbors (KNN)
+    #    - Support Vector Machines (SVM)
+    #    - Redes Neurais Artificiais (ANN)
+
     # ESCOLHA 1 = Regressão Logística por ser mais simples :D
     #   - modelo linear que usa uma função logística para realizar a classificacao multiclasse
     #   - LogisticRegression
@@ -241,14 +236,22 @@ if __name__ == '__main__':
     # instancia do Modelo com parametros
     # sem o solver e até 1000 iteracao estava com retorno de aviso que nao foi convergido para um resultado otimo
     print("Criando Modelo com Regressao Linear!\n")
-
     modelo = LogisticRegression(solver='saga', max_iter=5000)
 
-    # treinar utilizando tambem  oKFold (reparte em varios bloco)
-    
-    mean_score, std_score = cross_val_score_model(modelo, X, y, n_splits=5)
-    print(f"Mean F1 Score: {mean_score:.2f}, Std: {std_score:.2f}")
+    # treinar o modelo
+    modelo.fit(X_treino, y_treino) ## rever
 
+    # predicao dos dados de validacao utilizando o modelo treinado
+    y_pred = modelo.predict(X_valid)
+
+    # cálculo do f1 score macro
+    print("Gerando F1 score macro da predicao!")
+    f1_macro = f1_score(y_valid, y_pred, average='macro')
+    print('F1 score macro:', f1_macro)
+
+    # resultado da previsão
+    # print(y_pred)
+    # Convergendo só para 4!!
     
     # FINAL COM O TEST.CSV
     of_teste = test[variaveis]

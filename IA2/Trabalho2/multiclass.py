@@ -36,7 +36,14 @@ def transformar_dependente(x):
         else:
             return np.nan
 
-
+## Traformar o yes e no em binário (edjefa e edjefe)
+def transformar_edjef(x):
+    if x == "no":
+        return 0
+    elif x == "yes":
+        return 1
+    return x
+        
 if __name__ == '__main__':
     test = pd.read_csv('test.csv')
     train = pd.read_csv('train.csv')
@@ -51,6 +58,15 @@ if __name__ == '__main__':
     # dependentes em binario
     train['dep_binario'] = train['dependency'].map(transformar_dependente)
     test['dep_binario'] = test['dependency'].map(transformar_dependente)
+
+    # edjefa em binario
+    train['edjefa_binario'] = train['edjefa'].map(transformar_edjef)
+    test['edjefa_binario'] = test['edjefa'].map(transformar_edjef)
+
+    # edjefe em binario
+    train['edjefe_binario'] = train['edjefe'].map(transformar_edjef)
+    test['edjefe_binario'] = test['edjefe'].map(transformar_edjef)
+
 
     # idhogar: Identificador único do domicílio - "fd8a6d014" ... da problema no modelo
     # pode ter +1 familia na mesma casa
@@ -164,7 +180,7 @@ if __name__ == '__main__':
 
     # sem as obvias reduntantes**:
     variaveis = ['tamanho_familia', 'hogar_adul', 'hogar_mayor', 'hogar_total',
-                 'dep_binario', 'edjefe', 'edjefa', 'meaneduc', 'instlevel1', 'instlevel2',
+                 'dep_binario', 'edjefe_binario', 'edjefa_binario', 'meaneduc', 'instlevel1', 'instlevel2',
                  'instlevel3', 'instlevel4', 'instlevel5', 'instlevel6', 'instlevel7', 'instlevel8',
                  'instlevel9', 'bedrooms', 'overcrowding', 'tipovivi1', 'tipovivi2', 'tipovivi3',
                  'tipovivi4', 'tipovivi5', 'computer', 'television', 'mobilephone', 'qmobilephone',
@@ -213,7 +229,7 @@ if __name__ == '__main__':
     modelo = LogisticRegression()
 
     # treinar o modelo
-    modelo.fit(X_treino, y_treino)
+    modelo.fit(X_treino, y_treino) ## rever
 
     # predicao dos dados de validacao utilizando o modelo treinado
     y_pred = modelo.predict(X_valid)

@@ -4,10 +4,12 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import f1_score
 
 from pandas.plotting import scatter_matrix
 import matplotlib.pyplot as plt
 
+import seaborn as sns
 
 def matrizDeDispersao(variaveis):
     # MATRIZ DE DISPERSAO
@@ -225,11 +227,35 @@ if __name__ == '__main__':
     #   - modelo linear que usa uma função logística para realizar a classificacao multiclasse
     #   - LogisticRegression
 
-    # instancia do Modelo com parametros padroes (podemos melhorar dps com max_iter, penalty...)
-    modelo = LogisticRegression()
+    # instancia do Modelo com parametros
+    # sem o solver e até 1000 iteracao estava com retorno de aviso que nao foi convergido para um resultado otimo
+    modelo = LogisticRegression(solver='saga', max_iter=5000)
 
     # treinar o modelo
     modelo.fit(X_treino, y_treino) ## rever
 
     # predicao dos dados de validacao utilizando o modelo treinado
     y_pred = modelo.predict(X_valid)
+
+    # cálculo do f1 score macro
+    f1_macro = f1_score(y_valid, y_pred, average='macro')
+    print('F1 score macro:', f1_macro)
+
+    # resultado da previsão
+    # print(y_pred)
+    # Convergendo só para 4!!
+    
+    # FINAL COM O TEST.CSV
+    of_teste = test[variaveis]
+    p_final = modelo.predict(of_teste)
+    sub = pd.Series(p_final, index=test['Id'], name='Target')
+    sub.shape
+    sub.to_csv('subRegressao.csv', header=True)
+    # Nota no kaggle com regressao linear: 0.25569
+    # Nota no kaggle da original: 0.19482
+
+    # vamos usar a base recomendado de avaliacao: macro F1 score
+    # Recomendado quando há múltiplas classes desbalanceadas
+    # calcula a média harmônica do F1 score de cada classe, dando o mesmo peso para todas as classes.
+
+

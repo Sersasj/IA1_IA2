@@ -15,13 +15,11 @@ import seaborn as sns
 def matrizDeDispersao(variaveis):
     # MATRIZ DE DISPERSAO
     # ajuda na pre-selecao, tanto p ver quais são mais relevantes ou quais descartar pois nao tem influencia
-    # para as seguintes variaveis:
 
-    # df = pd.DataFrame(train, c = y, columns=['rooms', 'v14a', 'r4h1'])
+    # df = pd.DataFrame(train, c = y, columns=['rooms', 'v14a', 'r4h1']) #
     img = pd.plotting.scatter_matrix(X, alpha=0.5, figsize=(20, 20))
     plt.show()
 
-# Traformar em binário (dependency)
 
 def cross_val_score_model(model, X, y, n_splits=5):
     # cv = KFold(n_splits=n_splits, shuffle=True, random_state=42)
@@ -37,6 +35,7 @@ def cross_val_score_model(model, X, y, n_splits=5):
     return np.mean(scores), np.std(scores)
 
 
+# Traformar em binário (dependency)
 def transformar_dependente(x):
     try:
         x = float(x)
@@ -72,9 +71,9 @@ if __name__ == '__main__':
     print("Tratando variaveis!\n")
     # verifica nulos, "ascending" p no notebook python fica em ordem
 
-    print("Verificando nulos:\n")
-    print(train.isnull().sum().sort_values(ascending=False))
-    print()
+    print("Verificando nulos\n")
+    # print(train.isnull().sum().sort_values(ascending=False))
+    # print()
 
     # dependentes em binario
     train['dep_binario'] = train['dependency'].map(transformar_dependente)
@@ -122,77 +121,23 @@ if __name__ == '__main__':
     train['v18q1'].fillna(0, inplace=True)
     test['v18q1'].fillna(0, inplace=True)
 
-    print("Verificando nulos:\n")
-    print(train.isnull().sum().sort_values(ascending=False))
+    # print(train.isnull().sum().sort_values(ascending=False))
     # ====================================
 
-    print("Realizando ANALISES!\n")
     # Analises!
     # EDA - Exploratory Data Analysis
-
+    
     # Histograma
-
-    # Target
-    # Maior parte no grupo 4 = nao vulneraveis
-    # sns.countplot(x='Target', data=train)
-    plt.hist(train['Target'])
-    plt.show()
-
-    # Age
-    # # Pico entre 15 e 25 anos, a partir disso tem uma queda gradual
-    # Nossa amostra entao pode ser composta principalmente por famílias com crianças e jovens adultos.
-    train['age'].hist(bins=25)
-    plt.show()
-
-    # Distribuições da variável Target por idade
-    sns.displot(train, x='age', hue='Target',
-                multiple='stack', col='Target', col_wrap=3)
-    plt.show()
-    # Distribuição da variável Target por escolaridade
-    sns.displot(train, x='escolari', hue='Target',
-                multiple='stack', col='Target', col_wrap=3)
-    plt.show()
-
-    # matriz de correlação para todas as variáveis
-    # indica a relação entre duas variáveis
-    corr_matrix = train.corr()
-
-    # plotar a matriz de correlação usando um mapa de calor
-    plt.figure(figsize=(12, 8))
-    sns.heatmap(corr_matrix, cmap="YlGnBu")
-    plt.title("Matriz de correlação")
-    plt.show()
-
-    # matrizDeDispersao(variaveis)
-
-    # Matriz de correlacao
-    subset = ['v18q', 'escolari', 'age', 'tamhog', 'hogar_nin', 'Target']
-    corr_matrix = train[subset].corr()
-    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')
-    plt.title('Correlação entre variáveis selecionadas')
-    plt.show()
-    # Cada célula representa a correlação entre duas variáveis, sendo que as cores indicam o valor dessa correlação,
-    # variando de -1 a 1. Quanto mais próxima do vermelho, mais forte é a correlação positiva entre as duas variáveis.
-    # Quanto mais próxima do azul, mais forte é a correlação negativa entre as duas variáveis.
-    # Já as cores amarelas e verdes indicam correlações próximas a zero.
-
-    # Tamhog e hogar_nin tem uma relacao forte, isso pode indicar que elas estão relacionadas de alguma forma
-    # e que uma delas pode ser usada como um preditor da outra
-    # "hogar_nin" representa o número de crianças (menores de 19 anos) no mesmo domicílio.
-    # "tamhog" representa o tamanho total do domicílio (número total de pessoas que vivem no mesmo domicílio).
-    # Chutamos q tamhog sera mais relevante, por analisarmos a pobreza em conjunto da familia
-
-    # ... Testar com outras variaveis p ver se acha mais...
-    # ** Um histograma com todas nao rodou, demorou muito ae é melhor fazer separadamente
+    # analises()
 
     # ====================================
 
-    # Campos +importante por enquanto:
+    # Campos +importante
     # Target: Objetivo => indica se a família vive ou não em pobreza extrema.
     # Dependency: se tem ou nao dependente, pode ser binario
     # rooms: Número de quartos na residência (familias com pouco pode significa + pobreza)
-    # escolari: Anos de escolaridade da pessoa mais escolarizada no domicílio.
-    # meaneduc: Média de anos de escolaridade das pessoas no domicílio.
+    # escolari: Anos de escolaridade da pessoa mais escolarizada no domicílio
+    # meaneduc: Média de anos de escolaridade das pessoas no domicílio
 
     # obs.:
     # id: indexicacao => nao precisa usa no modelo
@@ -219,35 +164,18 @@ if __name__ == '__main__':
     y = train['Target']
     y = y.values
     # ====================================
+
     # Divisao de treino e validacao
     print("Divisao de treino e validacao!\n")
-
-    # seed para manter a aleatoriedade *===* troca pelo random_state
-    # np.random.seed(0)
-    # divisao 70/30 por ter um conjunto de dados "grande"
-    # X_treino, X_valid, y_treino, y_valid = train_test_split(X, y, test_size=0.3, random_state=0)
-
-    # print(X_treino.shape, X_valid.shape, y_treino.shape, y_valid.shape)
-    # (6689, 47) (2868, 47) (6689,) (2868,)
     
-    # X Treino: 6689 exemplos de treino
-    # X Validacao: 2868 exemplos de validacao
-    # y treino: 6689 valor correspondente dos ex. de treino
-    # y Validacao: 2868 valor correspondente dos ex. de validacao
-    # ====================================
-    
-    # ESCOLHA 1 = Regressão Logística por ser mais simples :D
-    #   - modelo linear que usa uma função logística para realizar a classificacao multiclasse
-    #   - LogisticRegression
+    # ESCOLHA 2 = Random Forest
 
-    # instancia do Modelo com parametros
-    # sem o solver e até 1000 iteracao estava com retorno de aviso que nao foi convergido para um resultado otimo
-    print("Criando Modelo com Regressao Linear!\n")
+    print("Criando Modelo com Random Forest!\n")
 
-    # Usado anteriormente para testar os parametros
+    # Usado anteriormente para testar os parametros com GridSearchCV
     param_grid = {
-    'n_estimators': [10, 50, 100],
-    'max_depth': [None, 5, 10]
+        'n_estimators': [10, 50, 100],
+        'max_depth': [None, 5, 10]
     }
     results = []
 
@@ -255,7 +183,6 @@ if __name__ == '__main__':
     mean_score, std_score = cross_val_score_model(modelo, X, y, n_splits=10)    
     print(f"Mean F1 Score: {mean_score:.5f}, Std: {std_score:.5f}")
         
-
     
     # FINAL COM O TEST.CSV
     of_teste = test[variaveis]
@@ -264,13 +191,65 @@ if __name__ == '__main__':
     p_final = modelo.predict(of_teste)
     sub = pd.Series(p_final, index=test['Id'], name='Target')
     sub.shape
-    sub.to_csv('subRegressao.csv', header=True)
-    print("\nArquivo subRegressao.csv criado do teste oficial!\n")
-    # Nota no kaggle com regressao linear: 0.25569
-    # Nota no kaggle da original: 0.19482
+    sub.to_csv('subRandomForest.csv', header=True)
+    print("\nArquivo subRandomForest.csv criado do teste oficial!\n")
 
     # vamos usar a base recomendado de avaliacao: macro F1 score
     # Recomendado quando há múltiplas classes desbalanceadas
     # calcula a média harmônica do F1 score de cada classe, dando o mesmo peso para todas as classes.
 
 
+def analises():
+    print("Realizando ANALISES!\n")
+    # Maior parte no grupo 4 = nao vulneraveis
+    # sns.countplot(x='Target', data=train)
+    plt.hist(train['Target'])
+    plt.show()
+
+    # Age
+    # # Pico entre 15 e 25 anos, a partir disso tem uma queda gradual
+    # amostra entao composta principalmente por famílias com crianças e jovens adultos.
+    train['age'].hist(bins=25)
+    plt.show()
+
+    # Distribuições da variável Target por idade
+    sns.displot(train, x='age', hue='Target',
+                multiple='stack', col='Target', col_wrap=3)
+    plt.show()
+    # Distribuição da variável Target por escolaridade
+    sns.displot(train, x='escolari', hue='Target',
+                multiple='stack', col='Target', col_wrap=3)
+    plt.show()
+
+    # matriz de correlação para todas as variáveis
+    # indica a relação entre duas variáveis
+    corr_matrix = train.corr()
+
+    # plotar a matriz de correlação usando um mapa de calor
+    plt.figure(figsize=(12, 8))
+    sns.heatmap(corr_matrix, cmap="YlGnBu")
+    plt.title("Matriz de correlação")
+    plt.show()
+
+    # matrizDeDispersao(variaveis) => naoa rodou mt bem essa
+
+    # Matriz de correlacao
+    subset = ['v18q', 'escolari', 'age', 'tamhog', 'hogar_nin', 'Target']
+    corr_matrix = train[subset].corr()
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')
+    plt.title('Correlação entre variáveis selecionadas')
+    plt.show()
+    # Cada célula representa a correlação entre duas variáveis, sendo que as cores indicam o valor dessa correlação,
+    # variando de -1 a 1
+    # vermelho, mais forte é a correlação positiva entre as duas variáveis
+    # azul, mais forte é a correlação negativa entre as duas variáveis
+    # cores amarelas e verdes correlações próximas a zero
+
+    # Tamhog e hogar_nin tem uma relacao forte => relacionadas
+    # uma preditor da outra
+    # "hogar_nin" representa o número de crianças (menores de 19 anos) no mesmo domicílio.
+    # "tamhog" representa o tamanho total do domicílio (número total de pessoas que vivem no mesmo domicílio).
+    # Chutamos q tamhog sera mais relevante, por analisarmos a pobreza em conjunto da familia
+
+    # ... outros testes com outras variaveis pelo notebook...
+    # ** Um histograma com todas nao rodou, demorou muito ae é melhor fazer separadamente

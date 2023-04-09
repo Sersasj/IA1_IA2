@@ -11,7 +11,8 @@ from sklearn.svm import SVC, LinearSVC
 from sklearn.preprocessing import normalize
 from pandas.plotting import scatter_matrix
 import matplotlib.pyplot as plt
-
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
 import seaborn as sns
 
 def matrizDeDispersao(variaveis):
@@ -246,14 +247,17 @@ if __name__ == '__main__':
     # sem o solver e até 1000 iteracao estava com retorno de aviso que nao foi convergido para um resultado otimo
     print("Criando Modelo com Regressao Linear!\n")
 
-    #modelo = LogisticRegression(solver='saga', max_iter=5000)
-    param_grid = {'C': [0.1,1, 10, 100], 'gamma': [1,0.1,0.01,0.001,'scale'],'kernel': ['poly','rbf', 'sigmoid' ]}
-    modelo = GridSearchCV(SVC(probability=True),param_grid,refit=True,verbose=1)
-    #modelo = LinearSVC(C=1.0)
-    # treinar utilizando tambem  oKFold (reparte em varios bloco)
-    
-    mean_score, std_score = cross_val_score_model(modelo, X, y, n_splits=5)
-    print(f"Mean F1 Score: {mean_score:.2f}, Std: {std_score:.2f}")
+    # Usado anteriormente para testar os parametros
+    param_grid = {
+    'n_estimators': [10, 50, 100],
+    'max_depth': [None, 5, 10]
+    }
+    results = []
+
+    modelo = RandomForestClassifier(10, max_depth=None)        
+    mean_score, std_score = cross_val_score_model(modelo, X, y, n_splits=3)    
+    print(f"Mean F1 Score: {mean_score:.5f}, Std: {std_score:.5f}")
+        
 
     
     # FINAL COM O TEST.CSV

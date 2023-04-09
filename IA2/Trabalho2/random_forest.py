@@ -11,7 +11,7 @@ from sklearn.svm import SVC, LinearSVC
 from sklearn.preprocessing import normalize
 from pandas.plotting import scatter_matrix
 import matplotlib.pyplot as plt
-from sklearn.ensemble import RandomForestClassifier
+
 from sklearn.neighbors import KNeighborsClassifier
 import seaborn as sns
 

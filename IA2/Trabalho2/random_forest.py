@@ -255,7 +255,7 @@ if __name__ == '__main__':
     results = []
 
     modelo = RandomForestClassifier(10, max_depth=None)        
-    mean_score, std_score = cross_val_score_model(modelo, X, y, n_splits=3)    
+    mean_score, std_score = cross_val_score_model(modelo, X, y, n_splits=10)    
     print(f"Mean F1 Score: {mean_score:.5f}, Std: {std_score:.5f}")
         
 

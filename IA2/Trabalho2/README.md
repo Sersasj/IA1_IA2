@@ -1,7 +1,32 @@
-## [Trabalho: multiclass.py](./multiclass.py)
-## [Notebook: trabs_notebook.ipynb](./multiclass.py)
+##  Tecnicas de machine learning em Previsão da pobreza doméstica na Costa Rica
 
----------------
+* Trabalho 2
+* Alunos:
+  - Gabriel Thiago -  RA: 107774
+  - Sergio Alvarez  -  RA: 115735 
+
+* Disciplina: 
+  * Aprend. Maq. e Model. Conhec. Incerto.
+
+----------------
+
+#### Files 
+
+- Técnica 1 - Logistic Regression
+  - [regressao.py](./regressao.py)
+- Técanica 2 - Random Forest
+  - [random_forest.py](./random_forest.py)
+- Pacotes necessários
+  - [requirements.txt](./requirements.txt)
+- All Data fields - Variable name, Variable description
+  - [codebook.csv](./codebook.csv)
+- Dataset teste - sem 'Target'
+  - [test.csv](./test.csv)
+- Dataset treino - com 'Target'
+  - [train.csv](./train.csv)
+
+----------------
+### Sobre o problema
 
 - Site extraido o notebook python: https://www.kaggle.com/competitions/costa-rican-household-poverty-prediction/data
 
@@ -19,7 +44,6 @@
     - KNN with 10 neighbors = 10 Fold CV Score: 0.32153 with std: 0.03028
     - KNN with 20 neighbors = 10 Fold CV Score: 0.31039 with std: 0.04974
   - Extra-trees classifier = 10 Fold CV Score: 0.32215 with std: 0.04671
-  - 
 
 
 ----------------
@@ -89,19 +113,3 @@ f1_score(y_true, y_predicted, average = 'macro`)
 ```
 
 Para esse problema, os rótulos estão desequilibrados, o que torna um pouco estranho usar a média macro para a métrica de avaliação, mas essa é uma decisão tomada pelos organizadores e não algo que possamos mudar! Em seu próprio trabalho, você deseja estar ciente dos desequilíbrios de rótulos e escolher uma métrica de acordo.
-
-----------------
-
-#### Files 
-
-- [codebook.csv](./codebook.csv) => All Data fields - Variable name, Variable description
-- [test.csv](./test.csv) => dataset teste - sem target
-- [train.csv](./train.csv) => dataset treino - com target
-
-----------
-
-anaconda / jupyter
-- $ jupyter-lab
-
-treinar modelo
-- $ from sklearn.ensemble import RandomForestClassifier

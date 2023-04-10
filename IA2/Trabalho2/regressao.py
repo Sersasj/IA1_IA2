@@ -184,7 +184,7 @@ if __name__ == '__main__':
     #   - modelo linear que usa uma função logística para realizar a classificacao multiclasse
     #   - LogisticRegression
 
-    print("Criando Modelo com Regressao Linear!\n")
+    print("Criando Modelo com Regressao Logistica!\n")
 
     parametros = {
         'C'       : [.001, 0.3, .1],

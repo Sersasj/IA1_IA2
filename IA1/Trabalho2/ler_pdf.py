@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Mar 29 20:00:14 2023
-
-@author: sergi
-"""
 
 import PyPDF2
 from nltk.corpus import stopwords

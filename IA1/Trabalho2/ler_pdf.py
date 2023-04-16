@@ -20,9 +20,9 @@ def concatenate_word():
 
         if (text_lines[i][-1] == "-"):
             next_line_words = text_lines[i+1].split(" ")
-            text_lines[i] = text_lines[i][:-1] + next_line_words[0]
+            text_lines[i] = text_lines[i][:-1] + next_line_words[0] + " "
             text_lines[i+1] = ' '.join(next_line_words[1:])
-
+        text_lines[i] = text_lines[i] + " "
     text = ''
     for i in text_lines:
         text += i
@@ -61,7 +61,6 @@ def identificaTermos(text):
     filtered_tokens = [token for token in tokens if token not in stop_words]
 
     word_counts = collections.Counter(filtered_tokens)
-
     most_common_words = word_counts.most_common(10)
 
     # Imprime as 10 palavras mais frequentes
@@ -72,7 +71,7 @@ def identificaTermos(text):
 if __name__ == '__main__':
 
     # path = 'image_processing/Going_deeper_with_convolutions.pdf'
-    path = './artificial_intelligence/Particle_swarm_optimization.pdf'
+    path = './artificial_intelligence/Deep_Residual_Learning_for_Image_Recognition.pdf'
     
     # Le todas a paginas do pdf
     with open(path, 'rb') as pdf_file:

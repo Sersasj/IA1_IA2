@@ -1,2 +1,2 @@
-ANALYSIS_OF_THE_IMPACT.pdf
-the objective of this study is to establish and assess performance metrics by exploring the modeling and simulation of semiconductor wafer fab manufacturing processes, with the goal of providing an energy quantication framework for semiconductor manufacturing in the presence of a cyber attack.;; ;; section introduces the methodology for energy quantication, cyber risk quantication framework, and simulation model.;; this study contributes to the literature by integrating cyberattack into semiconductor manufacturing simulation modeling to analyze the impact of cyberattack on energy quantication.;;
+Internet_of_Things_Platform.pdf
+ abstract the study objective is to evaluate schedule performance with the internet of thing platform in monitoring controlling construction project;; ;; ;; ;;

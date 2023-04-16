@@ -120,48 +120,82 @@ def extract_info(path_pdf):
     # percorre as sentenças do texto
     for sent, stem_sent in zip(doc.sents, doc_stem.sents):
         # Objetivo
-        if not obj_bool and not ("object "  in sent.text.lower()) and ("object" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
+        if not obj_bool and not ("object "  in sent.text.lower()) and ("object " in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research " in stem_sent.text.lower() or "articl " in stem_sent.text.lower())):
             print("\nObjetivo:", sent)
             objetivo = str(sent)
             obj_bool = True
-        elif not obj_bool and ("aim" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
+        elif not obj_bool and ("aim " in stem_sent.text.lower()) and (("studi " in stem_sent.text.lower() or "research " in stem_sent.text.lower() or "articl " in stem_sent.text.lower())):
             print("\nObjetivo:", sent)
             objetivo = str(sent)
             obj_bool = True    
-        elif not obj_bool and ("purpose" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
+        elif not obj_bool and ("purpose " in stem_sent.text.lower()) and (("studi " in stem_sent.text.lower() or "research " in stem_sent.text.lower() or "articl " in stem_sent.text.lower())):
             print("\nObjetivo:", sent)
             objetivo = str(sent)
             obj_bool = True      
-        elif not obj_bool and ("goal" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
+        elif not obj_bool and ("goal " in stem_sent.text.lower()) and (("studi " in stem_sent.text.lower() or "research " in stem_sent.text.lower() or "articl " in stem_sent.text.lower())):
             print("\nObjetivo:", sent)
             obj_bool = True       
             objetivo = str(sent)
 
             
         # Problema
-        if not problem_bool and "problem" in stem_sent.text.lower() and ("studi" in stem_sent.text.lower() 
-                                                                         or "research" in stem_sent.text.lower()) and not "object" in stem_sent.text.lower():
-            print("\nO problema citado no artigo é:", sent)
+        if not problem_bool and "problem " in stem_sent.text.lower() and ("studi " in stem_sent.text.lower() 
+                                                                         or "research " in stem_sent.text.lower()
+                                                                         or "articl " in stem_sent.text.lower()) and not "object" in stem_sent.text.lower():
+            print("\nProblema: ", sent)
             problem_bool = True
             problema = str(sent)
 
-        elif not problem_bool and "issue" in stem_sent.text.lower() and ("studi" in stem_sent.text.lower() 
-                                                                         or "research" in stem_sent.text.lower()) and not "object" in stem_sent.text.lower():
-            print("\nO problema citado no artigo é:", sent)
+        elif not problem_bool and "issue " in stem_sent.text.lower() and ("studi " in stem_sent.text.lower() 
+                                                                         or "research " in stem_sent.text.lower()
+                                                                         or "articl " in stem_sent.text.lower()) and not "object" in stem_sent.text.lower():
+            print("\nnProblema: ", sent)
             problem_bool = True
             problema = str(sent)
-
+        elif not problem_bool and "challeng " in stem_sent.text.lower() and ("studi " in stem_sent.text.lower()
+                                                                          or "research " in stem_sent.text.lower() 
+                                                                          or "articl " in stem_sent.text.lower()) and not "object" in stem_sent.text.lower():
+ 
+            print("\nProblema: ", sent)
+            problem_bool = True
+            problema = str(sent)
         # Metodologia
-        if not method_bool and "methodolog" in stem_sent.text.lower() and ("exampl" in stem_sent.text.lower() 
-                                                                            or "studi" in stem_sent.text.lower() 
-                                                                            or "research" in stem_sent.text.lower() 
-                                                                            or "model" in stem_sent.text.lower()):
+        if not method_bool and "methodolog " in stem_sent.text.lower() and ("exampl " in stem_sent.text.lower() 
+                                                                            or "studi " in stem_sent.text.lower() 
+                                                                            or "research " in stem_sent.text.lower() 
+                                                                            or "model " in stem_sent.text.lower()):
+
             print("\nMetodologia:", sent)
             method_bool = True
             metodologia = str(sent)
+        elif not method_bool and "conduct " in stem_sent.text.lower() and ("exampl " in stem_sent.text.lower() 
+                                                                            or "studi " in stem_sent.text.lower() 
+                                                                            or "research " in stem_sent.text.lower() 
+                                                                            or "model " in stem_sent.text.lower()):
 
-        # Contribuição
-        if not contrib_bool and "contribut" in sent.text.lower():
+            print(stem_sent)
+            print("\nMetodologia:", sent)
+            method_bool = True
+            metodologia = str(sent)
+        elif not method_bool and "util " in stem_sent.text.lower() and ("exampl " in stem_sent.text.lower() 
+                                                                            or "studi " in stem_sent.text.lower() 
+                                                                            or "research " in stem_sent.text.lower() 
+                                                                            or "model " in stem_sent.text.lower()):
+
+            print("\nMetodologia:", sent)
+            method_bool = True
+            metodologia = str(sent)
+        elif not method_bool and "employ " in stem_sent.text.lower() and ("exampl " in stem_sent.text.lower() 
+                                                                            or "studi " in stem_sent.text.lower() 
+                                                                            or "research " in stem_sent.text.lower() 
+                                                                            or "model " in stem_sent.text.lower()):
+
+            print("\nMetodologia:", sent)
+            method_bool = True
+            metodologia = str(sent)
+            
+            # Contribuição
+        if not contrib_bool and "contribut " in stem_sent.text.lower():
             # imprime o contributes na tela
             print("\nContribuição:", sent)
             contrib_bool = True

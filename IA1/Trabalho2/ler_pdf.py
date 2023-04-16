@@ -42,7 +42,7 @@ def preprocessamento():
     # print(text)
 
 
-def identificaTermos():
+def identificaTermos(text):
     
     # verifica se possui as stopword
     try:
@@ -50,7 +50,7 @@ def identificaTermos():
     except:
         nltk.download('stopwords')
         nltk.download('punkt')
-
+    text = re.sub(r'[^a-zA-Z\s]', '', text)
     # Remove as stopwords do conteúdo
     stop_words = set(stopwords.words('english'))
     tokens = word_tokenize(text.lower())
@@ -105,4 +105,4 @@ if __name__ == '__main__':
     intro = intro[0][1]
     print('\n\nIntroducao:', intro)
 
-    # identificaTermos()
+    identificaTermos(text)

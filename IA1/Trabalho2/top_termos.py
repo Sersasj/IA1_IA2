@@ -54,8 +54,6 @@ def preprocessamento():
     
     # Remove quebra de linha
     text = re.sub(r'\n', ' ', text)
-    # text = re.sub(r'\.', ' ', text)
-
     ## essas pontuacao e numeros é importante p filtrar as secao se pa
     # text = re.sub(r'[^a-zA-Z\s]', '', text)
     # print(text)
@@ -114,7 +112,7 @@ if __name__ == '__main__':
     preprocessamento()
 
     # print(pdf_reader.pages[0])
-    print(text[:10000])
+    #print(text[:10000])
     # pattern = re.compile(r'(\n(?:ABSTRACT|\d+\. [A-Z ]+).*?)(?=\n(?:ABSTRACT|\d+\. [A-Z ]+)|\Z)', re.DOTALL)
     # matches = pattern.findall(text)
     

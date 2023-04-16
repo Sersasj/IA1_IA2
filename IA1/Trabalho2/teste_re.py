@@ -35,10 +35,7 @@ def preprocessamento():
     
     # Remove pontuação
     text = re.sub(r'\n', ' ', text)
-    # text = re.sub(r'\.', ' ', text)
-
-    ## essas pontuacao e numeros é importante p filtrar as secao se pa
-    # text = re.sub(r'[^a-zA-Z\s]', '', text)
+    text = re.sub(r'[^a-zA-Z\s]', '', text)
     # print(text)
 
 
@@ -67,6 +64,7 @@ def identificaTermos():
 
 if __name__ == '__main__':
 
+    # path = 'testes/Teste_2pag_Particle.pdf'
     # path = 'image_processing/Going_deeper_with_convolutions.pdf'
     path = './artificial_intelligence/Particle_swarm_optimization.pdf'
     
@@ -81,28 +79,14 @@ if __name__ == '__main__':
             pdf_page = pdf_reader.pages[i]
             text += pdf_page.extract_text()
             # print(text)
+ 
+    # Expressão regular para extrair o texto de uma seção específica
+    secao_regex = re.compile(r'Seção\s[0-9]+\. .*?(?=(Seção\s[0-9]+\.|$))', re.DOTALL)
 
-    print('Autor(es):', info.author)
-    print('Titulo:', info.title, '\n')
+    # Extrair o texto das seções específicas
+    abstract = pdf_reader.pages[0].extractText()
+    secao1 = re.findall(secao_regex, pdf_reader.pages[1].extractText())
+    secao2 = re.findall(secao_regex, pdf_reader.pages[2].extractText())
+    referencias = re.findall(secao_regex, pdf_reader.getPage(pdf_reader.getNumPages() - 1).extractText())
+
     
-    preprocessamento()
-
-    # print(pdf_reader.pages[0])
-    # print(text[:10000])
-    # pattern = re.compile(r'(\n(?:ABSTRACT|\d+\. [A-Z ]+).*?)(?=\n(?:ABSTRACT|\d+\. [A-Z ]+)|\Z)', re.DOTALL)
-    # matches = pattern.findall(text)
-    
-    re_abstract = re.compile(r'(ABSTRACT|Abstract)([\s\S]+?(?=(1[\.]* I)))')
-    # re_abstract = re.compile(r'ABSTRACT([\s\S]+?(?=INTRODUCTION|$))')
-    abstract = re_abstract.findall(text)
-
-    abstract = abstract[0][1]
-    print('Abstract:', abstract)
-
-    re_intro = re.compile(r'(INTRODUCTION|Introduction)([\s\S]+?(?=(2[\.]* [A-Z]*)))')
-    intro = re_intro.findall(text)
-    
-    intro = intro[0][1]
-    print('\n\nIntroducao:', intro)
-
-    # identificaTermos()

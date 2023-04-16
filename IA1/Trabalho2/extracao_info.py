@@ -79,11 +79,12 @@ def preprocessamento():
 nlp = spacy.load('en_core_web_sm')
 
 
-path = './papers/Internet_of_Things_Platform.pdf'
-#path = './papers/ANALYSIS_OF_THE_IMPACT.pdf'
+#path = './papers/Internet_of_Things_Platform.pdf'
+path = './papers/ANALYSIS_OF_THE_IMPACT.pdf'
 #path = './image_processing/Histograms_of_oriented_gradients_for_human_detection.pdf'
 
 def extract_info(path_pdf):
+    objetivo, problema, metodologia, contribuicao = "","","",""
     global texto
     # Le todas a paginas do pdf
     with open(path_pdf, 'rb') as pdf_file:
@@ -121,26 +122,35 @@ def extract_info(path_pdf):
         # Objetivo
         if not obj_bool and not ("object "  in sent.text.lower()) and ("object" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
             print("\nObjetivo:", sent)
+            objetivo = str(sent)
             obj_bool = True
         elif not obj_bool and ("aim" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
             print("\nObjetivo:", sent)
+            objetivo = str(sent)
             obj_bool = True    
         elif not obj_bool and ("purpose" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
             print("\nObjetivo:", sent)
+            objetivo = str(sent)
             obj_bool = True      
         elif not obj_bool and ("goal" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
             print("\nObjetivo:", sent)
-            obj_bool = True            
+            obj_bool = True       
+            objetivo = str(sent)
+
             
         # Problema
         if not problem_bool and "problem" in stem_sent.text.lower() and ("studi" in stem_sent.text.lower() 
                                                                          or "research" in stem_sent.text.lower()) and not "object" in stem_sent.text.lower():
             print("\nO problema citado no artigo é:", sent)
             problem_bool = True
+            problema = str(sent)
+
         elif not problem_bool and "issue" in stem_sent.text.lower() and ("studi" in stem_sent.text.lower() 
                                                                          or "research" in stem_sent.text.lower()) and not "object" in stem_sent.text.lower():
             print("\nO problema citado no artigo é:", sent)
             problem_bool = True
+            problema = str(sent)
+
         # Metodologia
         if not method_bool and "methodolog" in stem_sent.text.lower() and ("exampl" in stem_sent.text.lower() 
                                                                             or "studi" in stem_sent.text.lower() 
@@ -148,11 +158,17 @@ def extract_info(path_pdf):
                                                                             or "model" in stem_sent.text.lower()):
             print("\nMetodologia:", sent)
             method_bool = True
-    
+            metodologia = str(sent)
+
         # Contribuição
         if not contrib_bool and "contribut" in sent.text.lower():
             # imprime o contributes na tela
             print("\nContribuição:", sent)
             contrib_bool = True
+            contribuicao = str(sent)
 
-extract_info(path)
+    return objetivo, problema, metodologia, contribuicao
+objetivo, problema, metodologia, contribuicao = extract_info(path)
+with open('output.txt', 'w') as file:
+    file.write(path.split("/")[-1]+"\n")
+    file.write(objetivo + ";; " + problema + ";; " + metodologia + ";; " + contribuicao + ";;")

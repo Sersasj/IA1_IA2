@@ -48,12 +48,7 @@ def normalizacao():
 # realiza a limpeza dos texto
 def preprocessamento():
     global texto
-    
-    texto = texto.replace('Methodology. ', 'Methodology ') 
-    texto = texto.replace('Methodology: ', 'Methodology ') 
-    texto = texto.replace('Objective. ', 'Objective ') 
-    texto = texto.replace('Objective: ', 'Objective ')
-    
+
     concatenate_word()
     
     # Remove quebra de linha
@@ -69,8 +64,14 @@ def preprocessamento():
     texto = references_regex.sub("References", texto)
 
     while "  " in texto:
-        texto = texto.replace("  ", " ")        
-
+        texto = texto.replace("  ", " ")   
+        
+    texto = texto.replace('abstract', ' . abstract')
+    texto = texto.replace('methodology. ', 'methodology ') 
+    texto = texto.replace('methodology: ', 'methodology ') 
+    texto = texto.replace('objective. ', 'objective ') 
+    texto = texto.replace('objective: ', 'objective ')
+    
 
 # python -m spacy download pt_core_news_sm
 # carrega o modelo do spacy em ingles
@@ -82,73 +83,92 @@ nlp = spacy.load('en_core_web_sm')
 path = './papers/ANALYSIS_OF_THE_IMPACT.pdf'
 #path = './image_processing/Histograms_of_oriented_gradients_for_human_detection.pdf'
 
-# Le todas a paginas do pdf
-with open(path, 'rb') as pdf_file:
-    # Cria obj de leitura do pdf
-    pdf_reader = PyPDF2.PdfReader(pdf_file)
-    info = pdf_reader.metadata
-    texto = ''
-    # for i in range(len(pdf_reader.pages)):
-    for i in range(len(pdf_reader.pages)):
-        pdf_page = pdf_reader.pages[i]
-        texto += pdf_page.extract_text()
-        # print(texto)
+def extract_info(path_pdf):
+    objetivo, problema, metodologia, contribuicao = "","","",""
+    global texto
+    # Le todas a paginas do pdf
+    with open(path_pdf, 'rb') as pdf_file:
+        # Cria obj de leitura do pdf
+        pdf_reader = PyPDF2.PdfReader(pdf_file)
+        info = pdf_reader.metadata
+        texto = ''
+        # for i in range(len(pdf_reader.pages)):
+        for i in range(len(pdf_reader.pages)):
+            pdf_page = pdf_reader.pages[i]
+            texto += pdf_page.extract_text()
+            # print(texto)
+    
+    preprocessamento()    
+    # Stemming do texto
+    stemmer = PorterStemmer()
+    tokens = nltk.word_tokenize(texto)
+    stems = [stemmer.stem(token) for token in tokens]
+    stemmed_text = " ".join(stems)
+    stemmed_text_list= stemmed_text.split(" ")
+    texto_list = texto.split(" ")
+    texto_list = [word for word in texto_list if len(word) != 0]
+    
+    
+    # processa o texto com o spacy
+    doc_stem = nlp(stemmed_text)
+    doc = nlp(texto)
+    obj_bool = False
+    problem_bool = False
+    method_bool = False
+    contrib_bool = False
+    
+    # percorre as sentenças do texto
+    for sent, stem_sent in zip(doc.sents, doc_stem.sents):
+        # Objetivo
+        if not obj_bool and not ("object "  in sent.text.lower()) and ("object" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
+            print("\nObjetivo:", sent)
+            objetivo = str(sent)
+            obj_bool = True
+        elif not obj_bool and ("aim" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
+            print("\nObjetivo:", sent)
+            objetivo = str(sent)
+            obj_bool = True    
+        elif not obj_bool and ("purpose" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
+            print("\nObjetivo:", sent)
+            objetivo = str(sent)
+            obj_bool = True      
+        elif not obj_bool and ("goal" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
+            print("\nObjetivo:", sent)
+            obj_bool = True       
+            objetivo = str(sent)
 
-preprocessamento()    
-# Stemming do texto
-stemmer = PorterStemmer()
-tokens = nltk.word_tokenize(texto)
-stems = [stemmer.stem(token) for token in tokens]
-stemmed_text = " ".join(stems)
-stemmed_text_list= stemmed_text.split(" ")
-texto_list = texto.split(" ")
-texto_list = [word for word in texto_list if len(word) != 0]
+            
+        # Problema
+        if not problem_bool and "problem" in stem_sent.text.lower() and ("studi" in stem_sent.text.lower() 
+                                                                         or "research" in stem_sent.text.lower()) and not "object" in stem_sent.text.lower():
+            print("\nO problema citado no artigo é:", sent)
+            problem_bool = True
+            problema = str(sent)
 
+        elif not problem_bool and "issue" in stem_sent.text.lower() and ("studi" in stem_sent.text.lower() 
+                                                                         or "research" in stem_sent.text.lower()) and not "object" in stem_sent.text.lower():
+            print("\nO problema citado no artigo é:", sent)
+            problem_bool = True
+            problema = str(sent)
 
-# processa o texto com o spacy
-doc_stem = nlp(stemmed_text)
-doc = nlp(texto)
-obj_bool = False
-problem_bool = False
-method_bool = False
-contrib_bool = False
+        # Metodologia
+        if not method_bool and "methodolog" in stem_sent.text.lower() and ("exampl" in stem_sent.text.lower() 
+                                                                            or "studi" in stem_sent.text.lower() 
+                                                                            or "research" in stem_sent.text.lower() 
+                                                                            or "model" in stem_sent.text.lower()):
+            print("\nMetodologia:", sent)
+            method_bool = True
+            metodologia = str(sent)
 
-# percorre as sentenças do texto
-for sent, stem_sent in zip(doc.sents, doc_stem.sents):
+        # Contribuição
+        if not contrib_bool and "contribut" in sent.text.lower():
+            # imprime o contributes na tela
+            print("\nContribuição:", sent)
+            contrib_bool = True
+            contribuicao = str(sent)
 
-    # Objetivo
-    if not obj_bool and ("object" not in sent.text.lower()) and ("object" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
-        print("\nObjetivo:", sent)
-        obj_bool = True
-    elif not obj_bool and ("aim" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
-        print("\nObjetivo:", sent)
-        obj_bool = True    
-    elif not obj_bool and ("purpose" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
-        print("\nObjetivo:", sent)
-        obj_bool = True      
-    elif not obj_bool and ("goal" in stem_sent.text.lower()) and (("studi" in stem_sent.text.lower() or "research" in stem_sent.text.lower() or "articl" in stem_sent.text.lower())):
-        print("\nObjetivo:", sent)
-        obj_bool = True            
-        
-    # Problema
-    if not problem_bool and "problem" in stem_sent.text.lower() and ("studi" in stem_sent.text.lower() 
-                                                                     or "research" in stem_sent.text.lower()) and not "object" in stem_sent.text.lower():
-        print("\nO problema citado no artigo é:", sent)
-        problem_bool = True
-    elif not problem_bool and "issue" in stem_sent.text.lower() and ("studi" in stem_sent.text.lower() 
-                                                                     or "research" in stem_sent.text.lower()) and not "object" in stem_sent.text.lower():
-        print("\nO problema citado no artigo é:", sent)
-        problem_bool = True
-    # Metodologia
-    if not method_bool and "methodolog" in stem_sent.text.lower() and ("exampl" in stem_sent.text.lower() 
-                                                                        or "studi" in stem_sent.text.lower() 
-                                                                        or "research" in stem_sent.text.lower() 
-                                                                        or "model" in stem_sent.text.lower()):
-        print("\nMetodologia:", sent)
-        method_bool = True
-
-    # Contribuição
-    if not contrib_bool and "contribut" in sent.text.lower():
-        # imprime o contributes na tela
-        print("\nContribuição:", sent)
-        contrib_bool = True
+    return objetivo, problema, metodologia, contribuicao
+objetivo, problema, metodologia, contribuicao = extract_info(path)
+with open('output.txt', 'w') as file:
+    file.write(path.split("/")[-1]+"\n")
+    file.write(objetivo + ";; " + problema + ";; " + metodologia + ";; " + contribuicao + ";;")

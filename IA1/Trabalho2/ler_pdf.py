@@ -9,6 +9,7 @@ import re
 import tabula
 from nltk.stem import PorterStemmer
 import json
+import unicodedata
 
 def concatenate_word():
     global text
@@ -27,20 +28,39 @@ def concatenate_word():
     for i in text_lines:
         text += i
 
+def normalizacao():
+    global text
+    # td em minusculo
+    text = text.lower()
+
+    # acentos e especiais
+    text = unicodedata.normalize('NFKD', text).encode('ASCII', 'ignore').decode('utf-8')
+
+    # substitui abreviações p inteiras
+    text = text.replace('fig.', 'figure')
+    text = text.replace('e.g.', 'for example')
+    text = text.replace('et al.', 'and others')
+    text = text.replace('ch.', 'chapter')
+    text = text.replace('sec.', 'section')
+    text = text.replace('ref.', 'reference')
+    text = text.replace('app.', 'appendix')
+
+
 # realiza a limpeza dos texto
 def preprocessamento():
     global text
 
     concatenate_word()
     
-    # Remove pontuação
+    # Remove quebra de linha
     text = re.sub(r'\n', ' ', text)
     # text = re.sub(r'\.', ' ', text)
 
     ## essas pontuacao e numeros é importante p filtrar as secao se pa
     # text = re.sub(r'[^a-zA-Z\s]', '', text)
     # print(text)
-    
+    normalizacao()
+
     # Remove referencia
     references_regex = re.compile(r"References.*", re.IGNORECASE)
     text = references_regex.sub("References", text)
@@ -71,7 +91,10 @@ def identificaTermos(text):
 if __name__ == '__main__':
 
     # path = 'image_processing/Going_deeper_with_convolutions.pdf'
-    path = './artificial_intelligence/Deep_Residual_Learning_for_Image_Recognition.pdf'
+    # path = './artificial_intelligence/Deep_Residual_Learning_for_Image_Recognition.pdf'
+    # path = './papers/Attributes_and_Entrepreneurial.pdf' # escrita d titulos diferente no 'text'
+    path = './papers/ANALYSIS_OF_THE_IMPACT.pdf'
+    # path = './papers/Internet_of_Things_Platform.pdf'
     
     # Le todas a paginas do pdf
     with open(path, 'rb') as pdf_file:
@@ -91,21 +114,23 @@ if __name__ == '__main__':
     preprocessamento()
 
     # print(pdf_reader.pages[0])
-    # print(text[:10000])
+    print(text[:10000])
     # pattern = re.compile(r'(\n(?:ABSTRACT|\d+\. [A-Z ]+).*?)(?=\n(?:ABSTRACT|\d+\. [A-Z ]+)|\Z)', re.DOTALL)
     # matches = pattern.findall(text)
     
-    re_abstract = re.compile(r'(ABSTRACT|Abstract)([\s\S]+?(?=(1[\.]* I)))')
+    re_abstract = re.compile(r'abstract([\s\S]+?(?=(1[\.]* i)))')
     # re_abstract = re.compile(r'ABSTRACT([\s\S]+?(?=INTRODUCTION|$))')
     abstract = re_abstract.findall(text)
+    
+    # abstract = abstract[0][1]
 
-    abstract = abstract[0][1]
-    print('Abstract:', abstract)
+    print('\nAbstract:', abstract)
 
-    re_intro = re.compile(r'(INTRODUCTION|Introduction)([\s\S]+?(?=(2[\.]* [A-Z]*)))')
+    re_intro = re.compile(r'introduction([\s\S]+?(?=(2[\.]* [a-z]*)))')
     intro = re_intro.findall(text)
     
-    intro = intro[0][1]
+    # intro = intro[0][1]
+    
     print('\n\nIntroducao:', intro)
 
     identificaTermos(text)

@@ -40,9 +40,13 @@ def preprocessamento():
     ## essas pontuacao e numeros é importante p filtrar as secao se pa
     # text = re.sub(r'[^a-zA-Z\s]', '', text)
     # print(text)
+    
+    # Remove referencia
+    references_regex = re.compile(r"References.*", re.IGNORECASE)
+    text = references_regex.sub("References", text)
 
 
-def identificaTermos():
+def identificaTermos(text):
     
     # verifica se possui as stopword
     try:
@@ -50,7 +54,7 @@ def identificaTermos():
     except:
         nltk.download('stopwords')
         nltk.download('punkt')
-
+    text = re.sub(r'[^a-zA-Z\s]', '', text)
     # Remove as stopwords do conteúdo
     stop_words = set(stopwords.words('english'))
     tokens = word_tokenize(text.lower())
@@ -105,4 +109,4 @@ if __name__ == '__main__':
     intro = intro[0][1]
     print('\n\nIntroducao:', intro)
 
-    # identificaTermos()
+    identificaTermos(text)

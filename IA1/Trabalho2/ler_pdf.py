@@ -40,6 +40,10 @@ def preprocessamento():
     ## essas pontuacao e numeros é importante p filtrar as secao se pa
     # text = re.sub(r'[^a-zA-Z\s]', '', text)
     # print(text)
+    
+    # Remove referencia
+    references_regex = re.compile(r"References.*", re.IGNORECASE)
+    text = references_regex.sub("References", text)
 
 
 def identificaTermos(text):

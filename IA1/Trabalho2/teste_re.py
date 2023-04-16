@@ -87,32 +87,53 @@ with open(path, 'rb') as pdf_file:
         # print(texto)
 
 # preprocessamento()
+texto = re.sub(r':', ';', texto) 
 concatenate_word()
 texto = re.sub(r'\n', ' ', texto) 
 
 # processa o texto com o spacy
 doc = nlp(texto)
 
+obj_bool = False
+problem_bool = False
+method_bool = False
+contrib_bool = False
+
 # percorre as sentenças do texto
 for sent in doc.sents:
-    # print(sent)
+    # print(sent.text.lower())
     # verifica se a sentença contém as palavras "objective" e "research"
-    if ("objective" in sent.text.lower() or "objectives" in sent.text.lower()) and ("study" in sent.text.lower() or "research" in sent.text.lower()):
+    if not obj_bool and ("objective" in sent.text.lower() or "objectives" in sent.text.lower()) and ("study" in sent.text.lower() or "research" in sent.text.lower() or "article" in sent.text.lower()):
         # extrai a parte do texto que segue a palavra "objetivo"
         objetivo = sent.text.split("objective")[1].strip()
         # imprime o objetivo na tela
-        print("O objetivo do artigo é:", objetivo)
+        print("\nO objetivo do artigo é:", objetivo)
+        obj_bool = True
+
+    # verifica se a sentença contém as palavras "problem"
+    if not problem_bool and "problem" in sent.text.lower() and ("study" in sent.text.lower() or "research" in sent.text.lower()) and not "objective" in sent.text.lower():
+        # extrai a parte do texto que segue a palavra "problem"
+        problem = sent.text.split("problem")[1].strip()
+        # imprime o problem na tela
+        print("\nO problema citado no artigo é:", problem)
+        problem_bool = True
 
     # verifica se a sentença contém as palavras "methodology"
-    if "methodology" in sent.text.lower() and ("study" in sent.text.lower() or "research" in sent.text.lower()) and not "objective" in sent.text.lower():
+    if not method_bool and "methodology" in sent.text.lower() and ("study" in sent.text.lower() or "research" in sent.text.lower() or "model" in sent.text.lower()):
         # extrai a parte do texto que segue a palavra "methodology"
-        methodology = sent.text.split("methodology")[1].strip()
+        try:
+            methodology = sent.text.split("methodology")[1].strip()
+        except:
+            methodology = sent.text.split("methodology")[0].strip()
+
         # imprime o methodology na tela
-        print("A metodologia do artigo é:", methodology)
+        print("\nMetodologia:", methodology)
+        method_bool = True
 
     # verifica se a sentença contém as palavras "contributes"
-    if "contributes" in sent.text.lower():
+    if not contrib_bool and "contributes" in sent.text.lower():
         # extrai a parte do texto que segue a palavra "contributes"
         contributes = sent.text.split("contributes")[1].strip()
         # imprime o contributes na tela
-        print("A contribuição do artigo é:", contributes)
+        print("\nContribuição:", contributes)
+        contrib_bool = True

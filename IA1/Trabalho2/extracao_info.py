@@ -74,10 +74,10 @@ def preprocessamento():
 
 
 
-path = './papers/Internet_of_Things_Platform.pdf'
+#path = './papers/Internet_of_Things_Platform.pdf'
 #path = './papers/ANALYSIS_OF_THE_IMPACT.pdf'
 #path = './image_processing/Histograms_of_oriented_gradients_for_human_detection.pdf'
-#path = './papers/Technology_Roadmapping.pdf'
+path = './papers/Learning_from_Imbalanced_Data.pdf'
 
 def extract_info(path_pdf):
     objetivo, problema, metodologia, contribuicao = "","","",""
@@ -119,7 +119,7 @@ def extract_info(path_pdf):
     for sent, stem_sent in zip(sentence_list, stem_sentence_list):
    
         # Objetivo
-        if not obj_bool and not ("object "  in sent) and ("object " in stem_sent) and (("studi" in stem_sent or "research " in stem_sent or "articl " in stem_sent)):
+        if not obj_bool and not ("object " in sent) and ("object " in stem_sent) and (("studi" in stem_sent or "research " in stem_sent or "articl " in stem_sent)):
             print("\nObjetivo:", sent)
             objetivo = str(sent)
             obj_bool = True
@@ -203,7 +203,11 @@ def extract_info(path_pdf):
             contribuicao = str(sent)
 
     return objetivo, problema, metodologia, contribuicao
+
+
 objetivo, problema, metodologia, contribuicao = extract_info(path)
+
+
 with open('output.txt', 'w') as file:
     file.write(path.split("/")[-1]+"\n")
     file.write(objetivo + ";; " + problema + ";; " + metodologia + ";; " + contribuicao + ";;")

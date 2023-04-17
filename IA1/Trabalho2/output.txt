@@ -1,2 +1,2 @@
-Internet_of_Things_Platform.pdf
- abstract the study objective is to evaluate schedule performance with the internet of thing platform in monitoring controlling construction project;; ;; ;; ;;
+Learning_from_Imbalanced_Data.pdf
+;;  furthermore, in order to stimulate future research in this field, we also highlight the major opportunities and challenges, as well as potential important research directions for learning from imbalanced data;; the active learning method studied in this work is based on the uncertainty sampling methodology here, the challenge is how to measure the uncertainty of an unlabeled instancein order to select the maximally uncertain instance to augment the training data;; ;;

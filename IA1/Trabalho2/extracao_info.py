@@ -57,9 +57,16 @@ def preprocessamento():
     
     # print(texto)
     normalizacao()    
+
+    # regex para extrair as referências
+    referencias_regex = re.compile(r"References[\s\S]*$", re.IGNORECASE | re.MULTILINE)
+
+    # Buscando as referências no texto
+    referencias = referencias_regex.search(text).group()
+    # print(referencias)
+
     # Remove referencia
-    references_regex = re.compile(r"References.*", re.IGNORECASE)
-    texto = references_regex.sub("References", texto)
+    text = re.sub(referencias_regex, "", text)
 
     while "  " in texto:
         texto = texto.replace("  ", " ")   
@@ -70,9 +77,6 @@ def preprocessamento():
     texto = texto.replace('objective. ', 'objective ') 
     texto = texto.replace('objective: ', 'objective ')
     
-
-
-
 #path = './papers/Internet_of_Things_Platform.pdf'
 #path = './papers/ANALYSIS_OF_THE_IMPACT.pdf'
 #path = './image_processing/Histograms_of_oriented_gradients_for_human_detection.pdf'

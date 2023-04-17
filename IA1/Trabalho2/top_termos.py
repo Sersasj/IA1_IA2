@@ -59,9 +59,19 @@ def preprocessamento():
     # print(text)
     normalizacao()
 
+    # regex para extrair as referências
+    referencias_regex = re.compile(r"References[\s\S]*$", re.IGNORECASE | re.MULTILINE)
+
+    # Buscando as referências no texto
+    referencias = referencias_regex.search(text).group()
+    # print(referencias)
+
     # Remove referencia
-    references_regex = re.compile(r"References.*", re.IGNORECASE)
-    text = references_regex.sub("References", text)
+    text = re.sub(referencias_regex, "", text)
+
+    # # extrai referencias para arquivo referencias.txt
+    with open('referencias.txt', 'w') as file:
+        file.write(referencias)
 
 
 def identificaTermos(text):
@@ -81,10 +91,11 @@ def identificaTermos(text):
     word_counts = collections.Counter(filtered_tokens)
     most_common_words = word_counts.most_common(10)
 
+    print('10 Palavras mais frequentes no artigo:')
     # Imprime as 10 palavras mais frequentes
     for word, count in most_common_words:
         print(f'{word}: {count}')
-
+    print('\n')
 
 if __name__ == '__main__':
 
@@ -105,17 +116,9 @@ if __name__ == '__main__':
             pdf_page = pdf_reader.pages[i]
             text += pdf_page.extract_text()
             # print(text)
-
-    print('Autor(es):', info.author)
-    print('Titulo:', info.title, '\n')
     
     preprocessamento()
 
-    # print(pdf_reader.pages[0])
-    #print(text[:10000])
-    # pattern = re.compile(r'(\n(?:ABSTRACT|\d+\. [A-Z ]+).*?)(?=\n(?:ABSTRACT|\d+\. [A-Z ]+)|\Z)', re.DOTALL)
-    # matches = pattern.findall(text)
-    
     re_abstract = re.compile(r'abstract([\s\S]+?(?=(1[\.]* i)))')
     # re_abstract = re.compile(r'ABSTRACT([\s\S]+?(?=INTRODUCTION|$))')
     abstract = re_abstract.findall(text)
@@ -129,6 +132,8 @@ if __name__ == '__main__':
     
     # intro = intro[0][1]
     
-    print('\n\nIntroducao:', intro)
+    # print('\n\nIntroducao:', intro)
 
+    print('\n\n')
+    
     identificaTermos(text)

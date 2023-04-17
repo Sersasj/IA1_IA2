@@ -5,12 +5,11 @@ import argparse
 import PyMuPDF
 
 
+# NAO FUNCIONA
+
 def search_files(search_term, directory):
-    # lista os arquivos no diretório
     file_list = os.listdir(directory)
-    # filtra apenas os arquivos com extensão .pdf
     file_list = [f for f in file_list if f.endswith('.pdf')]
-    # cria um dicionário vazio para armazenar as informações do arquivo
     file_info = {}
     
     for file_name in file_list:
@@ -37,7 +36,6 @@ def search_files(search_term, directory):
 
 
 def main():
-    # definindo argumentos da linha de comando
     parser = argparse.ArgumentParser(description='Search for term in PDF files.')
     parser.add_argument('term', type=str, help='Term to search in PDF files')
     parser.add_argument('--directory', '-d', type=str, default='files/', help='Directory where the PDF files are stored')

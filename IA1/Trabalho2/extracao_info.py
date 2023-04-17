@@ -53,9 +53,8 @@ def preprocessamento():
     # Remove quebra de linha
     texto = re.sub(r'\n', ' ', texto)
     # texto = re.sub(r'\.', ' ', texto)
-
-    ## essas pontuacao e numeros é importante p filtrar as secao se pa
     texto = re.sub(r'[^a-zA-Z\s\.,]', '', texto)
+    
     # print(texto)
     normalizacao()    
     # Remove referencia

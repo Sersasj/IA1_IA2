@@ -75,9 +75,6 @@ def preprocessamento():
     texto = texto.replace('objective. ', 'objective ') 
     texto = texto.replace('objective: ', 'objective ')
     
-#path = './papers/Internet_of_Things_Platform.pdf'
-#path = './papers/ANALYSIS_OF_THE_IMPACT.pdf'
-#path = './image_processing/Histograms_of_oriented_gradients_for_human_detection.pdf'
 path = './papers/Search_and_Evaluation_of_Coevolving_Problem_and_Solution_Spaces_in_a_Complex_Healthcare_Design_Science_Research_Project.pdf'
 
 def extract_info(path_pdf):

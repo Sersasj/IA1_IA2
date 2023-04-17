@@ -18,7 +18,6 @@
 - Artigos selecionados
   - [papers](./papers/)
 - -
-  - [-.py](./code.py)
 
 
 ### Execução
@@ -26,4 +25,5 @@
 $ pip3 install requirements.txt
 $ python3 top_termos.py
 $ python3 extracao_info.py
+Para trocar o arquivo, mudar o caminho na variavel path
 ```

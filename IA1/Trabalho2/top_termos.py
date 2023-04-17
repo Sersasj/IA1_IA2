@@ -94,10 +94,7 @@ def identificaTermos(text):
 
 if __name__ == '__main__':
 
-    # path = 'image_processing/Going_deeper_with_convolutions.pdf'
-    # path = './artificial_intelligence/Deep_Residual_Learning_for_Image_Recognition.pdf'
-    # path = './papers/Attributes_and_Entrepreneurial.pdf' # escrita d titulos diferente no 'text'
-    #path = './papers/ANALYSIS_OF_THE_IMPACT.pdf'
+
     path = './papers/Internet_of_Things_Platform.pdf'
     
     # Le todas a paginas do pdf

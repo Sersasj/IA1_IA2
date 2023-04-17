@@ -58,15 +58,13 @@ def preprocessamento():
     # print(texto)
     normalizacao()    
 
-    # regex para extrair as referências
-    referencias_regex = re.compile(r"References[\s\S]*$", re.IGNORECASE | re.MULTILINE)
 
     # Buscando as referências no texto
-    referencias = referencias_regex.search(text).group()
-    # print(referencias)
+    referencias_regex = re.compile(r"References[\s\S]*$", re.IGNORECASE | re.MULTILINE)
+    referencias = re.findall(referencias_regex, texto)
 
-    # Remove referencia
-    text = re.sub(referencias_regex, "", text)
+    ref = referencias[0].split("references")
+    texto = texto.replace(ref[-1], "")
 
     while "  " in texto:
         texto = texto.replace("  ", " ")   

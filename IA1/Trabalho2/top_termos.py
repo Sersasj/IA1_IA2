@@ -59,19 +59,14 @@ def preprocessamento():
     # print(text)
     normalizacao()
 
-    # regex para extrair as referências
     referencias_regex = re.compile(r"References[\s\S]*$", re.IGNORECASE | re.MULTILINE)
+    referencias = re.findall(referencias_regex, text)
 
-    # Buscando as referências no texto
-    referencias = referencias_regex.search(text).group()
-    # print(referencias)
-
-    # Remove referencia
-    text = re.sub(referencias_regex, "", text)
-
+    ref = referencias[0].split("references")
+    text = text.replace(ref[-1], "")
     # # extrai referencias para arquivo referencias.txt
     with open('referencias.txt', 'w') as file:
-        file.write(referencias)
+        file.write(ref[-1])
 
 
 def identificaTermos(text):
@@ -102,8 +97,8 @@ if __name__ == '__main__':
     # path = 'image_processing/Going_deeper_with_convolutions.pdf'
     # path = './artificial_intelligence/Deep_Residual_Learning_for_Image_Recognition.pdf'
     # path = './papers/Attributes_and_Entrepreneurial.pdf' # escrita d titulos diferente no 'text'
-    path = './papers/ANALYSIS_OF_THE_IMPACT.pdf'
-    # path = './papers/Internet_of_Things_Platform.pdf'
+    #path = './papers/ANALYSIS_OF_THE_IMPACT.pdf'
+    path = './papers/Internet_of_Things_Platform.pdf'
     
     # Le todas a paginas do pdf
     with open(path, 'rb') as pdf_file:
